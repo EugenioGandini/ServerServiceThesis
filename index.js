@@ -29,6 +29,10 @@ app.use(session ({
 //All stuff inside public should be public accessible
 app.use(express.static('public'));
 
+//Import all public routes for this server
+var routesPublic = require('./routes/publicRoutes');
+app.use('/', routesPublic);
+
 //Catch every request from clients. So if the request is not something that this server can handle send a 404 response.
 app.get('*', function(req, res, next) {
     let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`);
