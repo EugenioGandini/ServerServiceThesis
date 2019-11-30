@@ -31,7 +31,9 @@ app.use(express.static('public'));
 
 //Import all public routes for this server
 var routesPublic = require('./routes/publicRoutes');
+var routesPrivate = require('./routes/privateRoutes');
 app.use('/', routesPublic);
+app.use('/', routesPrivate);
 
 //Catch every request from clients. So if the request is not something that this server can handle send a 404 response.
 app.get('*', function(req, res, next) {
