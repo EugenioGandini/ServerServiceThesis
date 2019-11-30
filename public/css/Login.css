@@ -1,0 +1,15 @@
+.bordo {
+    border: 1px solid #CCCCCC;
+    color: #000;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.padding_login {
+    padding: 3px;
+}
+
+.bottone_reg_pass {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
