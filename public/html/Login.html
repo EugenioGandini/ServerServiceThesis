@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico"sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/flaty.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/Login.css">
+    <title>Area Riservata</title>
+</head>
+<body>
+    <!-- header -->
+    <div class="row">
+        <div class="col-sm-5">
+            <a href="" title="Tribunale di brescia">
+            <img src="/img/header.jpg" alt="Logo Ufficio Giudiziario" title="Logo Ufficio Giudiziario"></a>
+        </div>
+        <div class="col-sm-4 mt-4">
+            <div id="ctl00_header_pnlCerca" class="cercabox" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_header_btnCerca')">
+                <div class="input-group">
+                    <label for="ctl00_header_txtCerca" id="ctl00_header_lbl_cerca"></label>
+                    <input name="ctl00$header$txtCerca" type="text" value="Cerca nel sito" maxlength="30" id="ctl00_header_txtCerca" title="Cerca nel sito" onblur="if (value == '' ) { value = 'Cerca nel sito'}" onfocus="if (value == 'Cerca nel sito') {value = '' }" class="form-control input-sm">
+                    <span class="input-group-btn">
+                        <a id="ctl00_header_btnCerca" title="bottone cerca nel sito" class="" href="javascript:__doPostBack('ctl00$header$btnCerca','')"><img src="/img/search_ico.jpg"></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <img class="float-right" src="/img/logo_giustizia.jpg" alt="Logo Giustizia" title="Logo della Giustizia">
+        </div>
+    </div>  
+
+    <!-- menu -->
+    <div class="container-fluid hiddenApp_ug">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-tribunale">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+        
+                <div class="collapse navbar-collapse" id="nav-tribunale">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/default.aspx" id="ctl00_menu_navigazione_link_0">Home</a></li>
+        
+                        <li id="ctl00_menu_navigazione_link_1"><a class="hidden-xs" href="/elenco_chisiamo.aspx">Il Tribunale</a></li>
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Il Tribunale <span class="caret float-right"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/elenco_chisiamo.aspx" title="Chi siamo">Chi siamo</a></li>
+                                <li><a href="/elenco_cosafacciamo.aspx" title="Cosa facciamo">Cosa facciamo</a></li>
+                                <li><a href="/elenco_comeraggiungerci.aspx" title="Come arrivare">Come raggiungerci</a>
+                                </li>
+                                <li><a href="/elenco_comunicare.aspx" title="Per comunicare con noi">Per comunicare con noi</a></li>
+                                <li><a href="/bollettino/riservata_B.aspx" title="Area Riservata">Area Riservata</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="ctl00_menu_navigazione_link_2"><a class="hidden-xs" href="/ufficigiudiziari_distretto/informazioni.aspx">Uffici Giudiziari del Distretto</a></li>
+        
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Uffici Giudiziari del Distretto <span class="caret float-right"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/ufficigiudiziari_distretto/informazioni.aspx" title="Informazioni generali degli uffici giudiziari">Informazioni generali</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/html_distrettuali.aspx" title="Informazioni Uffici Distrettuali">Uffici Distrettuali (Corte d'Appello di Brescia)</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/circ_brescia.aspx" title="Informazioni Circondario di Brescia">Circondario di Brescia</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/html_bergamo.aspx" title="Informazioni Circondario di Bergamo">Circondario di Bergamo</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/html_crema.aspx" title="Informazioni Circondario di Crema">Circondario di Crema</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/html_cremona.aspx" title="Informazioni Circondario di Cremona">Circondario di Cremona</a></li>
+                                <li><a href="/ufficigiudiziari_distretto/html_mantova.aspx" title="Informazioni Circondario di Mantova">Circondario di Mantova</a></li>
+                            </ul>
+                        </li>
+                        <li id="ctl00_menu_navigazione_link_3"><a class="hidden-xs" href="/guida_ai_servizi.aspx">Servizi per l'utenza</a></li>
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Servizi per l'utenza <span class="caret float-right"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/guida_ai_servizi.aspx" title="Come fare per...">Come fare per...</a>
+                                </li>
+                                <li><a href="/certificazioni.aspx" title="Certificazioni">Certificazioni</a></li>
+                                <li><a href="/utility.aspx" title="Utility">Utility</a></li>
+                                <li><a href="/ricerca_ctu.aspx" title="Ricerca iscritti albo CTU e Periti">Ricerca iscritti albo CTU e Periti</a></li>
+        
+                            </ul>
+                        </li>
+                        <li><a href="/modulistica.aspx" id="ctl00_menu_navigazione_link_4">Moduli</a></li>
+                        <li id="ctl00_menu_navigazione_link_5"><a class="hidden-xs" href="/sentenze.aspx">Giurisprudenza</a></li>
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Giurisprudenza <span class="caret float-right"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/sentenze/" title="Giurisprudenza locale">Tribunale di Brescia</a></li>
+                                <li><a href="/documenti.aspx?d=4" title="Giurisprudenza generale">Corte di Cassazione</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="/pubblicita_legale.aspx" id="ctl00_menu_navigazione_link_6">Pubblicità legale</a></li>
+                        <li id="ctl00_menu_navigazione_link_7"><a class="hidden-xs" href="/links.aspx">Links</a></li>
+        
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Links <span class="caret float-right"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/links.aspx?p=3" title="Siti istituzionali">Siti istituzionali</a></li>
+                                <li><a href="/links.aspx?p=1" title="Motori di ricerca">Motori di ricerca</a></li>
+                                <li><a href="/links.aspx?p=2" title="Portali giuridici">Portali giuridici</a></li>
+                                <li><a href="/links.aspx?p=4" title="Fonti normative on-line">Fonti normative on-line</a>
+                                </li>
+                                <li><a href="/links.aspx?p=5" title="Giurisprudenza on-line">Giurisprudenza on-line</a>
+                                </li>
+                                <li><a href="/links.aspx?p=6" title="Riviste giuridiche">Riviste giuridiche</a></li>
+                                <li><a href="/links.aspx?p=7" title="Il mondo giudiziario">Il mondo giudiziario</a>
+                                </li>
+                                <li><a href="/links.aspx?p=8" title="Programmi di utilità">Programmi di utilità</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="http://tribunalebrescia.it/bollettino/riservata_B.aspx" class="riservata active">Area Riservata</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- content of page -->
+    <div class="row">
+        <div class="col-sm-8" style="float: none; margin: 0 auto;">
+            <h4>Area Riservata</h4>
+            <br><br>
+            <strong>Inserisci i tuoi dati</strong>
+            <br>
+                <form class="col-sm-5 bordo">
+                    <div class="form-group">
+                        <label for="username">Nome Utente</label>
+                        <input type="username" class="form-control" id="username" placeholder="Nome Utente">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-default">Entra</button>
+                    </div>
+                </form>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-5 bordo">
+                    <strong>Sei un nuovo utente?</strong>
+                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="#" role="button">Registrati</a></div>
+                    <p>La registrazione ti consente di usufruire dei servizi on line del Tribunale di Brescia.</p>
+                    <p>Se sei un Cittadino privato potrai...</p>
+                    <p>La registrazione e libera e gratuita.</p>
+                    <br>
+                    <strong>Hai dimenticato la password?</strong>
+                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="#" role="button">Reimposta password</a></div>
+                    
+                </div>
+        </div>
+    </div>
+
+                
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/Login.js"></script>
+  </body>
+</html>
