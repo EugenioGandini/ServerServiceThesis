@@ -130,35 +130,58 @@
     <!-- content of page -->
     <div class="row">
         <div class="col-sm-8" style="float: none; margin: 0 auto;">
-            <h4>Area Riservata</h4>
+            <h4>Registrazione nuovo Utente</h4>
             <br><br>
             <strong>Inserisci i tuoi dati</strong>
             <br>
-                <form id="form_login" class="col-sm-5 bordo">
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" placeholder="E-mail dell'utente">
+                <form id="form_register" class="bordo">
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom: 20px;">
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="nome">Nome *</label>
+                                <input type="text" class="form-control" id="nome" placeholder="" name="nome" required>
+                            </div>
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="cognome">Cognome *</label>
+                                <input type="text" class="form-control" id="cognome" placeholder="" name="cognome" required>
+                            </div>
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="codice_fiscale">Codice Fiscale *</label>
+                                <input type="text" class="form-control" id="codice_fiscale" placeholder="" name="codice_fiscale" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 20px;">
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="ragione_sociale">Ragione Sociale</label>
+                                <input type="text" class="form-control" id="ragione_sociale" placeholder="" name="ragione_sociale">
+                            </div>
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="telefono">Telefono</label>
+                                <input type="tel" class="form-control" id="telefono" placeholder="" name="telefono">
+                            </div>
+                            <div class="form-group" style="width: 75%; float: none; margin: 0 auto;">
+                                <label for="indirizzo">Indirizzo</label>
+                                <input type="text" class="form-control" id="text" placeholder="" name="indirizzo">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    <div class="row">
+                        <div class="col-md-4" style="float: none; margin: 0 auto;">
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" class="form-control" id="email" placeholder="" name="email" required>
+                                <label for="password">Password *</label>
+                                <input type="password" class="form-control" id="password" placeholder="" name="password" required>
+                                <label for="password_repeat">Ripeti Password *</label>
+                                <input type="password" class="form-control" id="password_repeat" placeholder="" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-default">Entra</button>
+                    <div class="text-center" style="margin-top: 20px;">
+                        <button id="invio_dati" type="submit" class="btn btn-default">Registrati</button>
                     </div>
+                    <p>* : campi obbligatori.</p>
                 </form>
-                <div class="col-sm-1"></div>
-                <div class="col-sm-5 bordo">
-                    <strong>Sei un nuovo utente?</strong>
-                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="/register" role="button">Registrati</a></div>
-                    <p>La registrazione ti consente di usufruire dei servizi on line del Tribunale di Brescia.</p>
-                    <p>Se sei un Cittadino privato potrai...</p>
-                    <p>La registrazione e libera e gratuita.</p>
-                    <br>
-                    <strong>Hai dimenticato la password?</strong>
-                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="/recover_password" role="button">Reimposta password</a></div>
-                    
-                </div>
         </div>
     </div>
 
@@ -166,6 +189,6 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/Login.js"></script>
+    <script src="/js/Register.js"></script>
   </body>
 </html>
