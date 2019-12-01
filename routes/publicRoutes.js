@@ -21,6 +21,11 @@ router.get('/register', (req, res) => {
     res.redirect('/html/Registration.html');
 });
 
+//This will redirect user to the page to recover the password
+router.get('/recover_password', (req,res) => {
+    res.redirect('/html/RecoverPassword.html');
+});
+
 //Try to login with email and password provided by user
 router.post('/do_login', (req,res) => {
     var dataBody = req.body;
@@ -105,16 +110,25 @@ router.post('/do_register', (req, res) => {
 
                         con.query(sql_query, function (err, result) {
                             if (err) throw err;
-                            con.end();
                             console.log("1 new user registered!");
-                            req.session.user = dataBody.email;
-                            res.status(200);
-                            res.end();
+                        });
+
+                        con.query("SELECT oid FROM user WHERE codicefiscale='" + new_user.codice_fiscale + "'", function(err, result){
+                            if (err) throw err;
+                            var oid_user_read = result[0].oid;
+                            var sql_query_user_group = "INSERT INTO rel_user_group (oid_user, oid_group) VALUES ('" + oid_user_read + "', '1')";
+                            con.query(sql_query_user_group, function (err, result) {
+                                if (err) throw err;
+                                con.end();
+                                console.log("Added relation between user and group.");
+                                req.session.user = dataBody.email;
+                                res.status(200);
+                                res.end();
+                            });
                         });
                     });
                 });
             }
-            
         })
     });
 });
