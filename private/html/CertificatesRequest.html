@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Richiesta Certificati</title>
+</head>
+<body>
+    <div class="d-flex toggled" id="wrapper">
+    
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light selected">Richiesta
+                    certificati</a>
+                <a href="/service_paper_document_copy_request"
+                    class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+    
+        <div id="page-content-wrapper">
+    
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
+                        title="Logo della Giustizia">
+                </div>
+            </nav>
+    
+            <!--Middle content-->
+
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <p>1) Selezionare il certificato che si intende richiedere.</p>
+                    <select class="custom-select">
+                        <option selected>-</option>
+                        <option value="1">Certificato di assenza/pendenza di procedure esecutive immobiliari</option>
+                        <option value="2">Certificato di assenza/pendenza di procedure fallimentari</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault(); $("#wrapper").toggleClass("toggled"); 
+        });
+    </script>
+</body>
+</html>
