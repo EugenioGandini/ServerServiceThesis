@@ -16,12 +16,18 @@ router.get('/home_page_portal', (req, res, next) =>{
         var con = mysql.createConnection(database_parameters);
         con.connect(function (err) {
             if (err) throw err;
+            var userData;
+            var userMessages;
             con.query("SELECT * FROM user WHERE email='" + req.session.user + "'", function (err, result, fields) {
                 if (err) throw err;
-                con.end();
-                var userData = result[0];
-                res.render('HomePagePortal.ejs', userData);
-            })
+                userData = result[0];
+                con.query("SELECT messages.date, messages.oid, messages.message, user.nome, user.cognome FROM messages INNER JOIN user ON messages.oid_user_sender=user.oid WHERE oid_user_receiver='" + userData.oid + "'", function (err, result, fields) {
+                    if (err) throw err;
+                    con.end();
+                    userMessages = result.slice(0,5);  // only first 5 messages
+                    res.render('HomePagePortal.ejs', {user: userData, messages: userMessages});
+                });
+            });
         })
     }
 });
