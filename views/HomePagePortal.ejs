@@ -7,16 +7,121 @@
     <link rel="icon" href="/img/favicon.ico"sizes="16x16">
     <link rel="stylesheet" href="/css/bootstrapV4.min.css">
     <link rel="stylesheet" href="/css/HomePagePortal.css">
-    <title>Home Page Area Privata</title>
+    <title>Area Privata</title>
 </head>
 <body>
-    <h1 class="display-4 text-center my-5">Benvenuto nell'area privata, <%= nome %> <%= cognome %></h1>
-    <div class="text-center">
-        <a class="text-center" href="/logout">Esci</a>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request" class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal"><h1 class="display-4">Area Riservata</h1></a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </nav>
+        
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <div class="float-left">
+                        <h4>Benvenuto/a, <%= user.nome %> <%= user.cognome %>.</h4>
+                    </div>
+                    <div class="float-right"><a class="btn btn-danger text-center" href="/logout">Esci</a></div>
+                    <br>
+                    <br>
+                    <br>
+                    <p>Dal pannello laterale "Servizi" puoi accedere ai servizi offerti dal Tribunale di Brescia.</p>
+                    <p>Puoi sempre tornare alla home del pannello di controllo cliccando sul titolo "Area Riservata".</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="float-left mt-2"><strong>Dati personali</strong></div>
+                                    <div class="float-right">
+                                        <a href="/edit_pesonal_data"><img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
+                                                style="width: 34px;height: 34px"></a>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <hr>
+                                        <p>Utente: <%= user.nome %> <%= user.cognome %></p>
+                                        <p>E-mail: <%= user.email %></p>
+                                        <p>Codice Fiscale: <%= user.codicefiscale %></p>
+                                        <p>Password: ********</p>
+                                        <% if (user.telefono) { %>
+                                        <p>Telefono: <%= user.telefono %></p>
+                                        <%} else { %>
+                                        <p>Telefono: Non specificato</p>
+                                        <% } %>
+                                        <% if (user.indirizzo) { %>
+                                        <p>Indirizzo: <%= user.indirizzo %></p>
+                                        <%} else { %>
+                                        <p>Indirizzo: Non specificato</p>
+                                        <% } %>
+                                        <% if (user.ragione_sociale) { %>
+                                        <p>Ragion Sociale: <%= user.ragione_sociale %></p>
+                                        <%} else { %>
+                                        <p>Ragione Sociale: Non specificato</p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="float-left mt-2"><p><strong>Messaggi</strong>&nbsp;&nbsp;&nbsp;<%= messages.length %></p></div>
+                                    <div class="float-right">
+                                        <a href="/messages"><img src="/img/messaggi_ico.png" href="#" alt="icona di tutti i messaggi"
+                                                style="width: 34px;height: 34px"></a>
+                                    </div>
+                                    <br>
+                                    <hr>
+                                    <% if (messages.length == 0) { %>
+                                        <p>Nessun messaggio</p>
+                                    <% } else { %>
+                                    <% messages.forEach(function(mesg){ %>
+                                        <a href="/messages?id=<%= mesg.oid %>"><%= mesg.date.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>&nbsp;&nbsp;<%= mesg.nome %> <%= mesg.cognome %>:&nbsp;&nbsp;
+                                            <% if (mesg.message.length > 40) { %>
+                                                <%= mesg.message.substring(0,40) + '...' %>
+                                            <% } else { %>
+                                                <%= mesg.message %>
+                                            <% } %>
+                                        </a>
+                                    <% }) %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </div>
     
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/Home_Page_Portal.js"></script>
 </body>
 </html>
