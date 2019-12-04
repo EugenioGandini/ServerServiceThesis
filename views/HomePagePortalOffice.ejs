@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico"sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Area Privata</title>
+</head>
+<body>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request" class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal"><h1 class="display-4">Area Riservata</h1></a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </nav>
+        
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <div class="float-left">
+                        <h4>Benvenuto/a, <%= user.nome %> <%= user.cognome %>.</h4>
+                    </div>
+                    <div class="float-right"><a class="btn btn-danger text-center" href="/logout">Esci</a></div>
+                    <br>
+                    <br>
+                    <br>
+                    <p>Dal pannello laterale "Servizi" puoi accedere alle sezioni dedicate ai servizi telematici.</p>
+                    <p>Qui sono mostrate le recenti richieste di servizi da parte dei cittadini.</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="mt-2">
+                                        <p><strong>Richieste di certificati</strong>&nbsp;&nbsp;&nbsp;<%= pendent_certificates.length %></p>
+                                    </div>
+                                    <hr>
+                                    <% if (pendent_certificates.length == 0) { %>
+                                    <p>Nessuna richiesta</p>
+                                    <% } else { %>
+                                    <% pendent_certificates.forEach(function(certificate){ %>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <a href="/service_certificates_request?oid=<%= certificate.oid %>"><%= certificate.date_request.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>&nbsp;&nbsp;
+                                                    <% if (certificate.type_name.length > 40) { %>
+                                                    <%= certificate.abbreviation_name %>
+                                                    <% } else { %>
+                                                    <%= certificate.type_name %>
+                                                    <% } %>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p><%= certificate.status_request %></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    <% }) %>
+                                    <% } %>
+                                    <% if (total_pendent_certificates > 5) { %>
+                                        <a href="/service_certificates_request">e altre <%= total_pendent_certificates-5 %> richiesta/e...</a>
+                                    <% } %>
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="float-left mt-2"><p><strong>Richiesta copie atti giudiziari</strong></div>
+                                    <br>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/Home_Page_Portal.js"></script>
+</body>
+</html>
