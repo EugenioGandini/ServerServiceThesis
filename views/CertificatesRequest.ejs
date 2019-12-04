@@ -48,11 +48,14 @@
             <div class="container-fluid mt-4">
                 <div class="col-sm-8 mx-auto">
                     <p>1) Selezionare il certificato che si intende richiedere.</p>
-                    <select class="custom-select">
+                    <select class="custom-select mt-2">
                         <option selected>-</option>
-                        <option value="1">Certificato di assenza/pendenza di procedure esecutive immobiliari</option>
-                        <option value="2">Certificato di assenza/pendenza di procedure fallimentari</option>
+                        <% certificates.forEach(function(cert){ %>
+                        <option value="<%= cert.oid %>"><%= cert.type_name %></option>
+                        <% }) %>
                     </select>
+                </div>
+                <div id="placeholder_form">
                 </div>
             </div>
         </div>
@@ -60,6 +63,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/CertificatesRequest.js"></script>
 
     <script>
         $("#menu-toggle").click(function (e) {

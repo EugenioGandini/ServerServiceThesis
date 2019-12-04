@@ -41,6 +41,14 @@ body {
     margin-top: 5px;
 }
 
+.bordo-form {
+    border: 2px solid #CCCCCC;
+    border-radius: 15px;
+    color: #000;
+    padding: 20px;
+    margin-top: 5px;
+}
+
 .no_underline_blue {
   text-decoration: none !important;
   color: #060606 !important;

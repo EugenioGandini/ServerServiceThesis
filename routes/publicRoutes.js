@@ -5,11 +5,10 @@ var mysql = require('mysql');
 
 var database_parameters = {
     host: "localhost",
-    user: "funzionario",
-    password: "funzionario",
+    user: "funzionario_tribunale",
+    password: "funzionario_tribunale",
     database: "sito_tribunale_db"
 };
-
 
 //For /login request return the login page
 router.get('/login', (req, res) =>{
@@ -33,7 +32,7 @@ router.post('/do_login', (req,res) => {
     var con = mysql.createConnection(database_parameters);
     con.connect(function(err) {
         if (err) throw err;
-        con.query("SELECT password FROM user WHERE email='" + dataBody.email + "'", function (err, result, fields) {
+        con.query("SELECT * FROM user INNER JOIN rel_user_group ON user.oid = rel_user_group.oid_user WHERE email = '" + dataBody.email + "'", function (err, result, fields) {
             if (err) throw err;
             con.end();
             if (result.length == 0) {
@@ -45,7 +44,7 @@ router.post('/do_login', (req,res) => {
                 bcrypt.compare(dataBody.password, result[0].password, function(err, res_password) {
                     if (res_password){
                         console.log('Login done for user: ' + dataBody.email);
-                        req.session.user = dataBody.email;
+                        req.session.user = result[0];
                         res.status(200);
                         res.end();
                     }
@@ -101,7 +100,7 @@ router.post('/do_register', (req, res) => {
                             sql_query = sql_query + ", '" + new_user.telefono + "'";
                         }
                         if (new_user.indirizzo != '') {
-                            sql_query = sql_query + ", '" + new_user.indirizzo + "'";
+                            sql_query = sql_query + ", '" + new_user.indirizzo.replace("'", "\"") + "'";
                         }
                         if (new_user.ragione_sociale != '') {
                             sql_query = sql_query + ", '" + new_user.ragione_sociale + "'";
@@ -113,15 +112,15 @@ router.post('/do_register', (req, res) => {
                             console.log("1 new user registered!");
                         });
 
-                        con.query("SELECT oid FROM user WHERE codicefiscale='" + new_user.codice_fiscale + "'", function(err, result){
+                        con.query("SELECT * FROM user WHERE codicefiscale='" + new_user.codice_fiscale + "'", function(err, result){
                             if (err) throw err;
-                            var oid_user_read = result[0].oid;
-                            var sql_query_user_group = "INSERT INTO rel_user_group (oid_user, oid_group) VALUES ('" + oid_user_read + "', '1')";
+                            var user_registered = result[0];
+                            var sql_query_user_group = "INSERT INTO rel_user_group (oid_user, oid_group) VALUES ('" + user_registered.oid + "', '1')";
                             con.query(sql_query_user_group, function (err, result) {
                                 if (err) throw err;
                                 con.end();
                                 console.log("Added relation between user and group.");
-                                req.session.user = dataBody.email;
+                                req.session.user = user_registered;
                                 res.status(200);
                                 res.end();
                             });
