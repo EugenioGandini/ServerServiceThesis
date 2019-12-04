@@ -48,8 +48,8 @@ Now we can go to [PhpMyAdmin](http://localhost/phpmyadmin/index.php) and create 
 ```
 Now we add a new user account for accessing DB by selecting the DB created and going under "Privileges" section.
 In this section we add a new user:
-* username: funzionario
-* password: funzionario
+* username: funzionario_tribunale
+* password: funzionario_tribunale
 and we give full privileges to this DB created.
 ```
 ```
