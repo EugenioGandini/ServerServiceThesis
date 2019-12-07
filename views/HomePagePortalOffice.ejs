@@ -65,7 +65,7 @@
                                     <% pendent_certificates.forEach(function(certificate){ %>
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <a href="/service_certificates_request?oid=<%= certificate.oid %>"><%= certificate.date_request.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>&nbsp;&nbsp;
+                                                <a href="/service_certificates_request"><%= certificate.date_request.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>&nbsp;&nbsp;
                                                     <% if (certificate.type_name.length > 40) { %>
                                                     <%= certificate.abbreviation_name %>
                                                     <% } else { %>
@@ -73,7 +73,7 @@
                                                     <% } %>
                                                 </a>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 text-center">
                                                 <p><%= certificate.status_request %></p>
                                             </div>
                                         </div>
