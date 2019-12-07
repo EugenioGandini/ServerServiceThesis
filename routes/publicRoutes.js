@@ -10,9 +10,18 @@ var database_parameters = {
     database: "sito_tribunale_db"
 };
 
+const citizen = "Cittadino";
+const court_stuff = "PersonaleCancelleria";
+const admin = "Amministratore";
+
 //For /login request return the login page
 router.get('/login', (req, res) =>{
     res.redirect('/html/Login.html');
+});
+
+//For /login_stuff request return the login page for the court stuff
+router.get('/login_stuff', (req, res) => {
+    res.redirect('/html/Login_Stuff.html');
 });
 
 //For /register redirect to /html/Registration.html
@@ -32,7 +41,7 @@ router.post('/do_login', (req,res) => {
     var con = mysql.createConnection(database_parameters);
     con.connect(function(err) {
         if (err) throw err;
-        con.query("SELECT * FROM user INNER JOIN rel_user_group ON user.oid = rel_user_group.oid_user WHERE email = '" + dataBody.email + "'", function (err, result, fields) {
+        con.query("SELECT * FROM user WHERE email = '" + dataBody.email + "'", function (err, result, fields) {
             if (err) throw err;
             con.end();
             if (result.length == 0) {
@@ -43,8 +52,10 @@ router.post('/do_login', (req,res) => {
             else{
                 bcrypt.compare(dataBody.password, result[0].password, function(err, res_password) {
                     if (res_password){
+                        var user_logged = result[0];
+                        user_logged.type_user = citizen;
                         console.log('Login done for user: ' + dataBody.email);
-                        req.session.user = result[0];
+                        req.session.user = user_logged;
                         res.status(200);
                         res.end();
                     }
@@ -57,6 +68,52 @@ router.post('/do_login', (req,res) => {
                 });
             }
         }); 
+    });
+});
+
+router.post('/do_login_stuff', (req, res) => {
+    var dataBody = req.body;
+
+    var con = mysql.createConnection(database_parameters);
+    con.connect(function (err) {
+        if (err) throw err;
+        con.query("SELECT * FROM court_staff WHERE court_staff.username = '" + dataBody.username + "'", function (err, result, fields) {
+            if (err) throw err;
+            if (result.length == 0) {
+                console.log('User ' + dataBody.username + ' doesn\'t exist.');
+                res.status(401).send("Credenziali sbagliate");
+                res.end();
+                con.end();
+            }
+            else {
+                bcrypt.compare(dataBody.password, result[0].password, function (err, res_password) {
+                    if (res_password) {
+                        var user_logged = result[0];
+
+                        con.query("SELECT t.groupname FROM `group` " +
+                                  "AS t JOIN rel_staff_group AS r ON t.oid=r.oid_group " +
+                                  "WHERE r.oid_user_staff=" + user_logged.oid, function (err, result, fields) {
+                            if (err) throw err;
+                            con.end();
+                            user_logged.type_user = result[0].groupname;
+
+                            console.log('Login done for user stuff: ' + dataBody.username);
+
+                            req.session.user = user_logged;
+                            res.status(200);
+                            res.end();
+                        });
+                    }
+                    else {  
+                        con.end();
+                        console.log('Password not correct for user: ' + dataBody.username);
+                        //wrong password
+                        res.status(401).send("Credenziali sbagliate");
+                        res.end();
+                    }
+                });
+            }
+        });
     });
 });
 
@@ -115,15 +172,10 @@ router.post('/do_register', (req, res) => {
                         con.query("SELECT * FROM user WHERE codicefiscale='" + new_user.codice_fiscale + "'", function(err, result){
                             if (err) throw err;
                             var user_registered = result[0];
-                            var sql_query_user_group = "INSERT INTO rel_user_group (oid_user, oid_group) VALUES ('" + user_registered.oid + "', '1')";
-                            con.query(sql_query_user_group, function (err, result) {
-                                if (err) throw err;
-                                con.end();
-                                console.log("Added relation between user and group.");
-                                req.session.user = user_registered;
-                                res.status(200);
-                                res.end();
-                            });
+                            user_registered.type_user = "Cittadino";
+                            req.session.user = user_registered;
+                            res.status(200);
+                            res.end();
                         });
                     });
                 });

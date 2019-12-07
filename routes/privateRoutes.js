@@ -9,6 +9,10 @@ var database_parameters = {
     database: "sito_tribunale_db"
 };
 
+const citizen = "Cittadino";
+const court_stuff = "PersonaleCancelleria";
+const admin = "Amministratore";
+
 //For /login request return the login page
 router.get('/home_page_portal', (req, res, next) =>{
     if (!req.session.user) return next();
@@ -18,9 +22,11 @@ router.get('/home_page_portal', (req, res, next) =>{
             if (err) throw err;
             var userData = req.session.user;
             var userMessages;
-            switch (userData.oid_group) {
-                case 1: {
-                    con.query("SELECT messages.date, messages.oid, messages.message, user.nome, user.cognome FROM messages INNER JOIN user ON messages.oid_user_sender=user.oid WHERE oid_user_receiver='" + userData.oid + "'", function (err, result, fields) {
+            switch (userData.type_user) {
+                case citizen: {
+                    con.query("SELECT m.date, m.oid, m.message, c.nome, c.cognome FROM messages AS m JOIN court_staff AS c ON c.oid=m.oid_user_sender " + 
+                              "WHERE oid_user_receiver=" + userData.oid + " " +
+                              "ORDER BY m.date DESC", function (err, result, fields) {
                         if (err) throw err;
                         userMessages = result.slice(0, 5);  // only first 5 messages
                         res.render('HomePagePortal.ejs', { user: userData, messages: userMessages });
@@ -28,7 +34,7 @@ router.get('/home_page_portal', (req, res, next) =>{
                     });
                     break;
                 }
-                case 2: {
+                case court_stuff: {
                     con.query("SELECT certificates_request.oid, certificates_request.status_request, certificates_request.date_request, type_certificates.abbreviation_name, type_certificates.type_name " +
                               "FROM certificates_request INNER JOIN type_certificates ON certificates_request.oid_type_certificate=type_certificates.oid " +
                               "WHERE NOT status_request='COMPLETATO' ORDER BY date_request DESC", function (err, result, fields) {
@@ -42,12 +48,34 @@ router.get('/home_page_portal', (req, res, next) =>{
                     });
                     break;
                 }
-                case 3: {
+                case admin: {
                     //TODO AMMINISTRATOR VIEW
                     break;
                 }
             }
         })
+    }
+});
+
+router.post('/send_message', (req, res, next) => {
+    if (!req.session.user) return next();
+    else {
+        var user_id_sender = req.session.user.oid;
+        var user_id_receiver = parseInt(req.body.user_id);
+        var msg = req.body.msg;
+
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`) VALUES (" +
+            user_id_receiver + ", " + user_id_sender + ", '" + msg + "')", function (err, result, fields) {
+                if (err) throw err;
+                con.end();
+                console.log('New messagge arrived!');
+                res.status(200);
+                res.end();
+            });
+        });
     }
 });
 
@@ -57,12 +85,18 @@ router.get('/logout', (req, res, next) => {
         res.redirect('/login');
     }
     else {
+        var type_user = req.session.user.type_user;
         //delete all data saved of the session
         req.session.destroy(function (err) {
             if (err) {
                 return next(err);
             } else {
-                res.redirect('/login');
+                if(type_user == citizen){
+                    res.redirect('/login');
+                }
+                else {
+                    res.redirect('/login_stuff');
+                }
             }
         });
     }

@@ -12,24 +12,16 @@ var database_parameters = {
     database: "sito_tribunale_db"
 };
 
+const citizen = "Cittadino";
+const court_stuff = "PersonaleCancelleria";
+const admin = "Amministratore";
+
 //Get the page for requesting a certificate.
 router.get('/service_certificates_request', (req, res, next) => {
     if (!req.session.user) return next();
     else {
         var userData = req.session.user;
-        switch (userData.oid_group){
-            case 1: {
-                sendPageNewRequest(req, res);  // for the citizen
-                break;
-            }
-            case 2: {
-                sendPageRequestOffice(req, res);  // for the officer
-                break;
-            }
-            case 3: {
-                break;
-            }
-        }
+        sendPageAllCertificates(req, res, userData);
     }
 });
 
@@ -45,6 +37,13 @@ router.post('/obtain_form_certificate', (req, res, next) => {
         else res.end();
     }
 });
+
+router.get('/add_request_certificate', (req, res, next) => {
+    if (!req.session.user) return next();
+    else {
+        sendPageNewRequest(req, res);
+    }
+})
 
 router.post('/add_request_certificate', (req, res, next) => {
     if (!req.session.user) return next();
@@ -72,6 +71,121 @@ router.post('/add_request_certificate', (req, res, next) => {
     }
 })
 
+router.post('/detail_certificate', (req, res, next) => {
+    if (!req.session.user) return next();
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            var query_detail_cert = "SELECT * FROM certificates_request " +
+                                    "AS c JOIN type_certificates AS t ON t.oid=c.oid_type_certificate JOIN user AS u ON u.oid=c.oid_user " +
+                                    "WHERE c.oid=" + req.body.certificate_request_id;
+            con.query(query_detail_cert, function (err, result, fields) {
+                if (err) throw err;
+                con.end();
+                res.send(result[0]);
+            })
+        });
+    }
+})
+
+router.get('/get_document_certificate_request', (req, res, next) => {
+    if (!req.session.user) return next();
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            con.query("SELECT c." + req.query.type + ", c.mimetype_" + req.query.type + " AS type_mime FROM certificates_request AS c WHERE c.oid=" + req.query.certificate_request_id, function (err, result, fields) {
+                if (err) throw err;
+                con.end();
+
+                var buffer_data = "";result[0].copy_ci;
+                var file_name = "";
+                if(req.query.type == "copy_ci") {
+                    buffer_data = result[0].copy_ci;
+                    file_name = "Carta di identita";
+                } else {
+                    buffer_data = result[0].copy_cf;
+                    file_name = "Codice fiscale";
+                }
+                switch (result[0].type_mime) {
+                    case "image/jpeg": {
+                        file_name = file_name + ".jpg"
+                        break;
+                    }
+                    case "image/png": {
+                        file_name = file_name + ".png"
+                        break;
+                    }
+                    case "application/pdf": {
+                        file_name = file_name + ".pdf"
+                        break;
+                    }
+                }
+                var path_buffered_file = path.join(__dirname) + "/../private/data_certificates/" + file_name;
+                fs.writeFile(path_buffered_file, buffer_data, "binary", function (err) {
+                    res.download(path.resolve(path.join(__dirname) + "/../private/data_certificates/" + file_name), function(err){
+                        if (err) {
+                        } else {
+                            fs.unlinkSync(path_buffered_file);
+                        }
+                    });
+                });
+            })
+        })
+    }
+});
+
+router.get('/get_file', (req, res, next) => {
+    if (!req.session.user) next();
+    else {
+        
+    }
+})
+
+router.post('/delete_certificate_request', (req, res, next) => {
+    if (!req.session.user || req.session.user.type_user != court_stuff) return next(); //only the stuff can do this
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            con.query("DELETE FROM `certificates_request` WHERE certificates_request.oid=" + req.body.certificate_request_id, function (err, result, fields) {
+                if (err) throw err;
+                con.end();
+                console.log('1 certificate request deleted.')
+                res.status(200);
+                res.end();
+            });
+        });
+    }
+})
+
+router.post('/update_certificate_request', (req, res, next) => {
+    if (!req.session.user || req.session.user.type_user != court_stuff) return next(); //only the stuff can do this
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            con.query("UPDATE `certificates_request` SET `status_request`='" + req.body.new_status +  "' " + 
+                      "WHERE certificates_request.oid=" + req.body.certificate_request_id, function (err, result, fields) {
+                if (err) throw err;
+                console.log('1 certificate updated status request.');
+                // send a message notify to user
+                
+                var msg = "Aggiornamento della richiesta di certificato. Nuovo stato: " + req.body.new_status;
+                con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`) VALUES (" +
+                    req.body.user_request + ", " + req.session.user.oid + ", '" + msg + "')", function (err, result, fields) {
+                    if (err) throw err;
+                    con.end();
+                    console.log('New messagge arrived!');
+                    res.status(200);
+                    res.end();
+                });            
+            });
+        });
+    }
+})
+
 function insertCertificateProcedureFallimenti(req, res, files, fields){
     var con = mysql.createConnection(database_parameters);
     con.connect(function (err) {
@@ -84,9 +198,9 @@ function insertCertificateProcedureFallimenti(req, res, files, fields){
         var path_cf = path.dirname(files.cf.path) + "\\" + "C_F" + path.extname(files.cf.name);
         fs.renameSync(files.cf.path, path_cf);
 
-        var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, company) VALUES (" +
+        var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, company, mimetype_copy_ci, mimetype_copy_cf) VALUES (" +
             "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_I" + path.extname(files.ci.name) + "'), LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_F" + path.extname(files.cf.name) + "'), '" +
-            fields.uso + "', TRUE, '" + fields.ditta + "')";
+            fields.uso + "', TRUE, '" + fields.ditta + "', '" + files.ci.type + "', '" + files.cf.type + "')";
         con.query(query_insert_request, function (err, result, fields) {
             if (err) throw err;
             else {
@@ -115,29 +229,42 @@ function sendPageNewRequest(req, res){
     });
 }
 
-function sendPageRequestOffice(req, res){
-    var oid_cert = req.query.oid;
-    if (oid_cert == undefined) {
-        var con = mysql.createConnection(database_parameters);
-        con.connect(function (err) {
-            if (err) throw err;
-            con.query("SELECT * FROM request_certificate", function (err, result, fields) {
+function sendPageAllCertificates(req, res, dataUser){
+    switch (dataUser.type_user) {
+        case citizen: {
+            var con = mysql.createConnection(database_parameters);
+            con.connect(function (err) {
                 if (err) throw err;
-                con.end();
-            })
-        });
-    }
-    else {
-        var con = mysql.createConnection(database_parameters);
-        con.connect(function (err) {
-            if (err) throw err;
-            con.query("SELECT * FROM request_certificate " +
-                "INNER JOIN type_certificates ON certificates_request.oid_type_certificate=type_certificates.oid " +
-                "WHERE request_certificate.oid='" + oid_cert + "'", function (err, result, fields) {
-                    if (err) throw err;
-                    con.end();
-                })
-        });
+                con.query("SELECT t.date_request, t.oid, t.status_request, t.payment, p.abbreviation_name, r.nome, r.cognome, r.oid AS user_id " + 
+                          "FROM `certificates_request` AS t " + 
+                          "JOIN user AS r ON t.oid_user = r.oid JOIN type_certificates AS p ON t.oid_type_certificate = p.oid " +
+                          "WHERE r.oid = " + dataUser.oid + " " +
+                          "ORDER BY t.status_request DESC, t.date_request DESC"
+                    , function (err, result, fields) {
+                        if (err) throw err;
+                        con.end();
+                        res.render('AllCertificates.ejs', { certificates: result, citizen: true });
+                });
+            });
+            break;
+        }
+        case court_stuff: {
+            var oid_cert = req.query.oid;
+            var con = mysql.createConnection(database_parameters);
+            con.connect(function (err) {
+                if (err) throw err;
+                con.query("SELECT t.date_request, t.oid, t.status_request, t.payment, p.abbreviation_name, r.nome, r.cognome, r.oid AS user_id " +
+                            "FROM `certificates_request` AS t " + 
+                            "JOIN user AS r ON t.oid_user = r.oid JOIN type_certificates AS p ON t.oid_type_certificate = p.oid " + 
+                            "ORDER BY t.status_request DESC, t.date_request DESC"
+                    , function (err, result, fields) {
+                        if (err) throw err;
+                        con.end();
+                        res.render('AllCertificates.ejs', { certificates: result, citizen: false});
+                });
+            });
+            break;
+        }
     }
 }
 

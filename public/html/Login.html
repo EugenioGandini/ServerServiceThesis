@@ -128,13 +128,15 @@
     </div>
 
     <!-- content of page -->
-    <div class="row">
+    <div class="row" style="margin: 30px;">
         <div class="col-sm-8" style="float: none; margin: 0 auto;">
-            <h4>Area Riservata</h4>
             <br><br>
-            <strong>Inserisci i tuoi dati</strong>
+            <div class="text-center"><h4>Area Riservata</h4></div>
+            <br><br>
+            <strong style="padding: 20px;">Inserisci i tuoi dati</strong>
             <br>
-                <form id="form_login" class="col-sm-5 bordo">
+            <form id="form_login" class="col-sm-6">
+                <div class="bordo">
                     <div class="form-group">
                         <label for="email">E-mail</label>
                         <input type="email" class="form-control" id="email" placeholder="E-mail dell'utente">
@@ -146,9 +148,10 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-default">Entra</button>
                     </div>
-                </form>
-                <div class="col-sm-1"></div>
-                <div class="col-sm-5 bordo">
+                </div>
+            </form>
+            <div class="col-sm-6">
+                <div class="bordo">
                     <strong>Sei un nuovo utente?</strong>
                     <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="/register" role="button">Registrati</a></div>
                     <p>La registrazione ti consente di usufruire dei servizi on line del Tribunale di Brescia.</p>
@@ -156,12 +159,77 @@
                     <p>La registrazione e libera e gratuita.</p>
                     <br>
                     <strong>Hai dimenticato la password?</strong>
-                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="/recover_password" role="button">Reimposta password</a></div>
-                    
+                    <div class="text-center"><a class="btn btn-default bottone_reg_pass" href="/recover_password" role="button">Reimposta
+                            password</a></div>
                 </div>
+            </div>
         </div>
     </div>
 
+    <!-- footer -->
+    <footer class="hiddenApp_ug">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="span-xs-12 footer">
+                    <p class="link-footer">
+                        <a href="/segnalazioni.aspx">Redazione</a>|<a href="/Mappa_sito.aspx">Mappa
+                            del sito</a>|<a href="/accessibile.aspx">Accessibilità</a>|
+                        <a href="/note_legali.aspx">Note legali</a>| <a href="/login_stuff" target="_blank">Amministrazione</a>
+                    </p>
+                    <hr>
+                    <p>
+                        Tribunale di brescia
+                        -
+                        Via L. Gambara, 40
+                        -
+                        25121
+                        Brescia
+                        (BS)
+                        <br>
+                        Centralino:
+                        030.7672111
+                        <br>
+                        Sito web realizzato da <a href="http://www.astegiudiziarie.it"
+                            title="[Link esterno] www.astegiudiziarie.it">Aste Giudiziarie Inlinea S.p.A.</a>
+                    </p>
+                    <hr>
+                    <p>
+                        Sito ottimizzato per:
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Internet Explorer 8+">
+                            <span class="fa fa-internet-explorer fa-lg"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Chrome">
+                            <span class="fa fa-chrome fa-lg"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Firefox">
+                            <span class="fa fa-firefox fa-lg"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Safari per Mac OS X e iOS">
+                            <span class="fa fa-safari fa-lg"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Opera per Mac OS X e Windows">
+                            <span class="fa fa-opera fa-lg"></span>
+                        </button>
+
+                    </p>
+                    <p>
+                        <a href="https://validator.w3.org/nu/?doc=http://www.tribunale.brescia.giustizia.it/default.aspx">
+                            <img src="/img/html_5.png" alt="Valid HTML 5.0" width="150">
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
                 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Area Privata</title>
+</head>
+
+<body>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request"
+                    class="list-group-item list-group-item-action bg-light selected">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request"
+                    class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
+                        title="Logo della Giustizia">
+                </div>
+            </nav>
+
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <% if(citizen) { %>
+                    <div class="text-center my-5"><a class="btn btn-primary" href="/add_request_certificate">Richiedi un certificato</a></div>
+                    <hr>
+                    <% } %>
+                        <% if(certificates.length > 0) { %>
+                        <table class="table bordo">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Tipo certificato</th>
+                                    <th scope="col">Utente</th>
+                                    <th scope="col">Pagamento</th>
+                                    <th scope="col">Stato</th>
+                                    <th class="text-center" scope="col">Comandi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% certificates.forEach(function(certificate){ %>
+                                <tr>
+                                    <td><%= certificate.date_request.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}) %>
+                                    </td>
+                                    <td><%= certificate.abbreviation_name %></td>
+                                    <td><%= certificate.cognome %> <%= certificate.nome %></td>
+                                    <% if(certificate.payment == 1) { %>
+                                    <td>Pagato</td>
+                                    <% } else { %>
+                                    <td>Attesa pagamento</td>
+                                    <% } %>
+                                    <% if (!citizen) { %>
+                                    <td>
+                                        <span style="display: none;"><%= certificate.user_id %></span>
+                                        <span style="display: none;"><%= certificate.oid %></span>
+                                        <select class="custom-select custom-select-sm select_status_request" id="select_status_request"
+                                            <% if(certificate.status_request=='COMPLETATO') { %>
+                                            disabled
+                                            <% } %>
+                                            >
+                                            <option value="NUOVO" 
+                                            <% if(certificate.status_request=='NUOVO') { %>
+                                                selected 
+                                            <% } %>
+                                            >NUOVO</option>
+                                        <option value="PRESA IN CARICO"
+                                            <% if(certificate.status_request=='PRESA IN CARICO') { %>
+                                                selected 
+                                            <% } %>
+                                            >PRESA IN CARICO</option>
+                                        <option value="COMPLETATO"
+                                            <% if(certificate.status_request=='COMPLETATO') { %>
+                                                selected disabled
+                                            <% } %>
+                                            >COMPLETATO</option>
+                                        </select>
+                                    </td>
+                                    <% } else { %>
+                                    <td><%= certificate.status_request %></td>
+                                    <% } %>
+                                    <td class="text-center">
+                                        <a class="see" data-toggle="modal" data-target="#modal_detail">
+                                            <span style="display: none;"><%= certificate.oid %></span>
+                                            <img src="/img/see_ico_control.png" style="width: 34px;height: 34px">
+                                        </a>
+                                        <% if(!citizen) { %>
+                                        <a class="replay" data-toggle="modal" data-target="#modal_replay" data-whatever="<%= certificate.cognome %> <%= certificate.nome %>">
+                                            <span style="display: none;"><%= certificate.oid %></span>
+                                            <span style="display: none;"><%= certificate.user_id %></span>
+                                            <img src="/img/reply_ico_control.png" style="width: 34px;height: 34px">
+                                        </a>
+                                        <a class="delete_request" href="#">
+                                            <span style="display: none;"><%= certificate.oid %></span>
+                                            <img src="/img/delete_ico.png" style="width: 30px;height: 30px">
+                                        </a>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                        <div class="text-center bordo"><strong class="my-5">Nessuna richiesta inoltrata.</strong></div>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal certificate message-->
+    <div class="modal fade" id="modal_replay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Destinatario:</label>
+                            <input type="text" class="form-control" id="recipient-name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Messaggio:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="send_msg_user" class="btn btn-primary">Invia messaggio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal detail certificate -->
+    <div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="float-left mt-2">
+                        <p>Data richiesta</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_date"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Tipo certificato</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_type"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Stato richiesta</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_status"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Utente richiedente</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_user"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Codice fiscale richiedente</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_c_f"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Motivo della richiesta</p>
+                    </div>
+                    <div class="float-right">
+                        <a id="recap_cert_req_reason" href="#" role="button" class="btn btn-secondary popover-test" title="Ragione della richiesta"  data-content="">Vedi</a>
+                    </div>
+                    <br>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Stato pagamento</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_cert_req_payment"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Allegato copia documento di identità</p>
+                    </div>
+                    <div class="float-right">
+                        <a id="recap_cert_req_copy_c_i" class="tooltip-test" title="Copia documento di identità" style="cursor: pointer;"><img src="/img/download_ico.png" style="width: 20px; height: 20px;"></a>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Allegato Copia codice fiscale</p>
+                    </div>
+                    <div class="float-right">
+                        <a id="recap_cert_req_copy_c_f" class="tooltip-test" title="Copia codice fiscale" style="cursor: pointer;"><img src="/img/download_ico.png" style="width: 20px; height: 20px;"></a>
+                    </div>
+                    <br>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/Home_Page_Portal.js"></script>
+    <script src="/js/AllCertificates.js"></script>
+</body>
+</html>

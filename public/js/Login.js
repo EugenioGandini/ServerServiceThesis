@@ -1,4 +1,4 @@
-$('#form_login').on('submit', function(event) {
+$('form').on('submit', function(event) {
   event.preventDefault();
 
   $.ajax({
