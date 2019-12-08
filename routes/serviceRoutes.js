@@ -29,12 +29,25 @@ router.get('/service_certificates_request', (req, res, next) => {
 router.post('/obtain_form_certificate', (req, res, next) => {
     if (!req.session.user) return next();
     else {
-        var type = req.body.typecertificate;
+        var type = parseInt(req.body.typecertificate);
         
-        if(type == 1) {
-            res.render('CertificatoAssenzaPendenzaDiProcedureFallimentari.ejs', {});
+        switch(type) {
+            case 1: {
+                res.render('CertificatoAssenzaPendenzaDiProcedureFallimentari.ejs', {});
+                break;
+            }
+            case 2: {
+                res.render('CertificatoAssenzaPendenzaDiProcedureEsecutiveMobiliari.ejs', {});
+                break;
+            }
+            case 3: {
+                res.render('CertificatoAssenzaPendenzaDiProcedureEsecutiveImmobiliari.ejs', {});
+                break;
+            }
+            default: {
+                res.end();
+            }
         }
-        else res.end();
     }
 });
 
@@ -58,11 +71,11 @@ router.post('/add_request_certificate', (req, res, next) => {
                     break;
                 }
                 case 2: {
-                    insertCertificateEsecuzioniMobiliariImmobiliari();
+                    insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields, "mobiliari");
                     break;
                 }
                 case 3: {
-                    insertCertificateEsecuzioniMobiliariImmobiliari();
+                    insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields, "immobiliari");
                     break;
                 }
             }
@@ -213,8 +226,31 @@ function insertCertificateProcedureFallimenti(req, res, files, fields){
     });
 }
 
-function insertCertificateEsecuzioniMobiliariImmobiliari(){
+function insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields){
+    var con = mysql.createConnection(database_parameters);
+    con.connect(function (err) {
+        if (err) throw err;
 
+        //var path_ci = path.join(__dirname) + "/../private/data_certificates/" + files.ci.name;
+        var path_ci = path.dirname(files.ci.path) + "\\" + "C_I" + path.extname(files.ci.name);
+        fs.renameSync(files.ci.path, path_ci);
+
+        var path_cf = path.dirname(files.cf.path) + "\\" + "C_F" + path.extname(files.cf.name);
+        fs.renameSync(files.cf.path, path_cf);
+
+        var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, bene, mimetype_copy_ci, mimetype_copy_cf) VALUES (" +
+            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_I" + path.extname(files.ci.name) + "'), LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_F" + path.extname(files.cf.name) + "'), '" +
+            fields.uso + "', TRUE, '" + fields.bene + "', '" + files.ci.type + "', '" + files.cf.type + "')";
+        con.query(query_insert_request, function (err, result, fields) {
+            if (err) throw err;
+            else {
+                console.log("Inserted new request successfully");
+                res.status(200);
+                res.redirect('/home_page_portal');
+            }
+            con.end();
+        });
+    })
 }
 
 function sendPageNewRequest(req, res){

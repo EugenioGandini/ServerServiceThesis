@@ -57,30 +57,30 @@
                                 <div class="m-2">
                                     <div class="float-left mt-2"><strong>Dati personali</strong></div>
                                     <div class="float-right">
-                                        <a href=""><img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
-                                                style="width: 34px;height: 34px"></a>
+                                        <a data-toggle="modal" data-target="#modal_edit_personal_data" style="cursor: pointer;">Modifica<img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
+                                                style="width: 34px;height: 34px;"></a>
                                     </div>
                                     <br>
                                     <div>
                                         <hr>
-                                        <p>Utente: <%= user.nome %> <%= user.cognome %></p>
-                                        <p>E-mail: <%= user.email %></p>
-                                        <p>Codice Fiscale: <%= user.codicefiscale %></p>
+                                        <p><span>Utente: </span><span id="nome"><%= user.nome %> <%= user.cognome %></span></p>
+                                        <p><span>E-mail: </span><span id="email"><%= user.email %></span></p>
+                                        <p><span>Codice Fiscale: </span><span id="c_f"><%= user.codicefiscale %></span></p>
                                         <p>Password: ********</p>
                                         <% if (user.telefono) { %>
-                                        <p>Telefono: <%= user.telefono %></p>
+                                        <p><span>Telefono: </span><span id="telefono"><%= user.telefono %></span></p>
                                         <%} else { %>
-                                        <p>Telefono: Non specificato</p>
+                                        <p><span>Telefono: </span><span id="telefono">Non specificato</span></p>
                                         <% } %>
                                         <% if (user.indirizzo) { %>
-                                        <p>Indirizzo: <%= user.indirizzo %></p>
+                                        <p><span>Indirizzo: </span><span id="indirizzo"><%= user.indirizzo %></span></p>
                                         <%} else { %>
-                                        <p>Indirizzo: Non specificato</p>
+                                        <p><span>Indirizzo: </span><span id="indirizzo">Non specificato</span></p>
                                         <% } %>
                                         <% if (user.ragione_sociale) { %>
-                                        <p>Ragion Sociale: <%= user.ragione_sociale %></p>
+                                        <p><span>Ragione Sociale: </span><span id="rag_sociale"><%= user.ragione_sociale %></span></p>
                                         <%} else { %>
-                                        <p>Ragione Sociale: Non specificato</p>
+                                        <p><span>Ragione Sociale: </span><span id="rag_sociale">Non specificato</span></p>
                                         <% } %>
                                     </div>
                                 </div>
@@ -165,6 +165,57 @@
         </div>
     </div>
     
+    <div class="modal fade" id="modal_edit_personal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifica dati personali</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-update-data-user">
+                        <div class="form-group">
+                            <label for="data_user_name" class="col-form-label">Utente*:</label>
+                            <input type="text" class="form-control" id="data_user_name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_email" class="col-form-label">E-mail*:</label>
+                            <input type="text" class="form-control" id="data_user_email" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_cf" class="col-form-label">Codice fiscale*:</label>
+                            <input type="email" class="form-control" id="data_user_cf" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_password" class="col-form-label">Nuova password:</label>
+                            <input type="password" class="form-control" id="data_user_password" name="data_user_password" placeholder="**********">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_telefono" class="col-form-label">Telefono:</label>
+                            <input type="tel" class="form-control" id="data_user_telefono" name="data_user_telefono" placeholder="Inserisci qui il tuo numero di telefono">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_indirizzo" class="col-form-label">Indirizzo:</label>
+                            <input type="text" class="form-control" id="data_user_indirizzo" name="data_user_indirizzo" placeholder="Inserisci qui il tuo indirizzo">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_rs" class="col-form-label">Ragione Sociale:</label>
+                            <input type="text" class="form-control" id="data_user_rs" name="data_user_rs" placeholder="Inserisci qui la tua ragione sociale">
+                        </div>
+                        <p> * : campi non modificabili.</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="send_update_data_user" class="btn btn-primary">Aggiorna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>

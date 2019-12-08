@@ -36,11 +36,36 @@ $('#modal_detail').on('show.bs.modal', function (event) {
                 $('#recap_cert_req_payment').text('Pagamento pendente');
             }
             $('#recap_cert_req_payment').text(data.abbreviation_name);
+
+            if(data.bene != undefined || data.company != undefined){
+                $('.object-request').show();
+                if (data.bene != undefined){
+                    $('#object_request').text(data.bene);
+                }
+                if (data.company != undefined) {
+                    $('#object_request').text(data.company);
+                }
+            }
         }
     });
 })
 
+$('#modal_detail').on('hidden.bs.modal', function (e) {
+    console.log("chiudo");
+    $('.object-request').hide();
+    $('#object_request').text('');
+    $('#recap_cert_req_date').text('');
+    $('#recap_cert_req_type').text('');
+    $('#recap_cert_req_status').text('');
+    $('#recap_cert_req_user').text('');
+    $('#recap_cert_req_c_f').text('');
+    $('#recap_cert_req_reason').attr("data-content", '');
+    $('#recap_cert_req_payment').text('');
+    $('#recap_cert_req_payment').text('');
+});
+
 $('#send_msg_user').on('click', function(){
+    
     $.ajax({
         url: "/send_message",
         type: "post",
@@ -48,7 +73,7 @@ $('#send_msg_user').on('click', function(){
         statusCode: {
             200: function (response) {
                 alert('Messaggio inviato.');
-                $('.modal').modal('toggle');
+                $('#modal_replay').modal('hide');
             },
             401: function (response) {
                 alert("Errore: " + response.responseText);

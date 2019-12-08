@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var bcrypt = require('bcryptjs');
 
 var database_parameters = {
     host: "localhost",
@@ -78,6 +79,45 @@ router.post('/send_message', (req, res, next) => {
         });
     }
 });
+
+router.post('/update_data_user', (req, res, next) => {
+    if (!req.session.user) return next();
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            
+            var query_update_data = "UPDATE `user` SET ";
+            query_update_data = query_update_data + " `oid`=" + req.session.user.oid;
+            if (req.body.new_values.data_user_password != ""){
+                var salt = bcrypt.genSaltSync(10);
+                var res_hash = bcrypt.hashSync(req.body.new_values.data_user_password, salt);
+                query_update_data = query_update_data + ", `password`='" + res_hash + "'"
+            }
+            if (req.body.new_values.data_user_telefono != "" && req.body.new_values.data_user_telefono != req.body.old_values.data_user_telefono) {
+                query_update_data = query_update_data + ", `telefono`='" + req.body.new_values.data_user_telefono + "'";
+                req.session.user.telefono = req.body.new_values.data_user_telefono;
+            }
+            if (req.body.new_values.data_user_indirizzo != "" && req.body.new_values.data_user_indirizzo != req.body.old_values.data_user_indirizzo) {
+                query_update_data = query_update_data + ", `indirizzo`='" + req.body.new_values.data_user_indirizzo + "'";
+                req.session.user.indirizzo = req.body.new_values.data_user_indirizzo;
+            }
+            if (req.body.new_values.data_user_rs != "" && req.body.new_values.data_user_rs != req.body.old_values.data_user_rs) {
+                query_update_data = query_update_data + ", `ragione_sociale`='" + req.body.new_values.data_user_rs + "'";
+                req.session.user.ragione_sociale = req.body.new_values.data_user_rs;
+            }
+
+            query_update_data = query_update_data + " WHERE user.oid=" + req.session.user.oid;
+            con.query(query_update_data, function (err, result, fields) {
+                if (err) throw err;
+                con.end();
+                console.log('Updated info of 1 user.');
+                res.status(200);
+                res.end();
+            });
+        });
+    }
+})
 
 //This route will logout the current user
 router.get('/logout', (req, res, next) => {
