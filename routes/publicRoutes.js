@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var mysql = require('mysql');
+var myutils = require('./../my_utils/utils_function');
 
 var database_parameters = {
     host: "localhost",
@@ -157,7 +158,7 @@ router.post('/do_register', (req, res) => {
                             sql_query = sql_query + ", '" + new_user.telefono + "'";
                         }
                         if (new_user.indirizzo != '') {
-                            sql_query = sql_query + ", '" + new_user.indirizzo.replace("'", "\"") + "'";
+                            sql_query = sql_query + ", '" + myutils.parseTextInsertSql(new_user.indirizzo) + "'";
                         }
                         if (new_user.ragione_sociale != '') {
                             sql_query = sql_query + ", '" + new_user.ragione_sociale + "'";

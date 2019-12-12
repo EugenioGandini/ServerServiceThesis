@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Copia atti giudiziari</title>
+</head>
+
+<body>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request"
+                    class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request"
+                    class="list-group-item list-group-item-action bg-light selected">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
+                        title="Logo della Giustizia">
+                </div>
+            </nav>
+
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <h4 class="text-center my-4">Richiesta copia atti giudiziari</h4>
+                    <form class="col-lg-6 mx-auto my-4 bordo-form" action="add_request_copy_document" method="post"
+                        enctype="multipart/form-data">
+                        <div class="input-group mb-5">
+                            <label for="nome_atto" class="font-weight-bold col-sm-3 p-1">Atto notorio</label>
+                            <input id="nome_atto" type="text" class="form-control text-center" name="nome_atto"
+                                placeholder="Nome dell'atto notorio di cui si vuole la copia" required>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="ci" id="carta_identita" required>
+                            <label class="custom-file-label" for="carta_identita">Copia carta di identità</label>
+                        </div>
+                        <div class="custom-file mt-5 mb-3">
+                            <input type="file" class="custom-file-input" name="cf" id="codice_fiscale" required>
+                            <label class="custom-file-label" for="codice_fiscale">Copia codice fiscale</label>
+                        </div>
+                        <!-- <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="autentica">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Autentica
+                            </label>
+                        </div> -->
+                        <div class="row mt-3 mb-1">
+                            <div class="col-sm-3">Autentica:</div>
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="autentica" id="inline_autentica1" value="TRUE" required>
+                                    <label class="form-check-label" for="inline_autentica1">Si</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="autentica" id="inline_autentica2" value="FALSE" checked>
+                                    <label class="form-check-label" for="inline_autentica2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3 mt-1">
+                            <div class="col-sm-3">Urgente:</div>
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="urgente" id="urgente_inline1" value="TRUE" required>
+                                    <label class="form-check-label" for="urgente_inline1">Si</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="urgente" id="urgente_inline2" value="FALSE" checked>
+                                    <label class="form-check-label" for="urgente_inline2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Dati non obbligatori:</p>
+                        <div class="custom-file mb-5">
+                            <input type="file" class="custom-file-input" name="doc_aggiuntivo" id="doc_aggiuntivo" aria-describedby="doc_aggiuntivo">
+                            <label class="custom-file-label" for="doc_aggiuntivo">Documento aggiuntivo</label>
+                        </div>
+                        <div class="text-center mb-2">
+                            <button type="submit" class="btn btn-info">Invia richiesta</button>
+                        </div>
+                    </form>
+                    <div id="riepilogo" style="display: none;">
+                        <div class="col-xl-6 mx-auto mt-5">
+                            <p>Riepilogo dei dati inseriti.</p>
+                        </div>
+                        <div class="col-xl-6 mx-auto mb-4 bordo-form">
+                            <div class="float-left mt-2">
+                                <p><strong>Atto notorio:</strong></p>
+                            </div>
+                            <div class="float-right">
+                                <p id="recap_nome_atto"></p>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="float-left mt-2">
+                                <p><strong>Copia documento di identità:</strong></p>
+                            </div>
+                            <div class="float-right">
+                                <p id="recap_c_i"></p>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="float-left mt-2">
+                                <p><strong>Copia codice fiscale:</strong></p>
+                            </div>
+                            <div class="float-right">
+                                <p id="recap_c_f"></p>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="float-left mt-2">
+                                <p><strong>Autentica:</strong></p>
+                            </div>
+                            <div class="float-right">
+                                <p id="recap_autentica">No</p>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="float-left mt-2">
+                                <p><strong>Urgente:</strong></p>
+                            </div>
+                            <div class="float-right">
+                                <p id="recap_urgente">No</p>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="float-left mt-2 doc_aggiuntivo_nascosto" style="display: none;">
+                                <p><strong>Urgente:</strong></p>
+                            </div>
+                            <div class="float-right doc_aggiuntivo_nascosto" style="display: none;">
+                                <p id="recap_doc_agg"></p>
+                            </div>
+                            <br class="doc_aggiuntivo_nascosto" style="display: none;">
+                            <hr class="doc_aggiuntivo_nascosto" style="display: none;">
+                        </div>
+                        <div class="text-center">
+                            <div>
+                                <a class="btn btn-danger mx-2" href="/home_page_portal">Annulla richiesta</a>
+                                <a id="send_request" class="btn btn-success mx-2">Invia richiesta</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/DocumentCopyRequest.js"></script>
+</body>
+</html>

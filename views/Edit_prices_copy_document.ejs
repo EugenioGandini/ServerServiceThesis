@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Prezzi copie atti giudiziari</title>
+</head>
+
+<body>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request"
+                    class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request"
+                    class="list-group-item list-group-item-action bg-light selected">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
+                        title="Logo della Giustizia">
+                </div>
+            </nav>
+
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <div class="text-center my-5">
+                        <p>Tabella dei <strong>prezzi € per pagina</strong> in base a numero di pagine/autenticità della copia e urgenza della richiesta.</p>
+                    </div>
+                    <hr>
+                    <% if (rows_prices.length > 0) { %>
+                    <table class="table bordo">
+                        <thead>
+                            <tr>
+                                <th scope="col">Min numero pagine</th>
+                                <th scope="col">Max numero pagine</th>
+                                <th scope="col">Non autentica/Non urgente</th>
+                                <th scope="col">Non autentica/Urgente</th>
+                                <th scope="col">Autentica/Non Urgente</th>
+                                <th scope="col">Autentica/Urgente</th>
+                                <th class="text-center" scope="col">Comandi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% rows_prices.forEach(function(row){ %>
+                            <tr>
+                                <td style="display: none;"><%= row.oid %></td>
+                                <td><%= row.range_min %></td>
+                                <td><%= row.range_max %></td>
+                                <td class="prezzo" style="cursor: pointer;"><%= row.nonautentica_nonurgente %> €</td>
+                                <td class="prezzo" style="cursor: pointer;"><%= row.nonautentica_urgente %> €</td>
+                                <td class="prezzo" style="cursor: pointer;"><%= row.autentica_nonurgente %> €</td>
+                                <td class="prezzo" style="cursor: pointer;"><%= row.autentica_urgente %> €</td>
+                                <td class="text-center">
+                                    <a class="delete_copy_price" style="cursor: pointer;">
+                                        <img src="/img/delete_ico.png" style="width: 30px;height: 30px">
+                                    </a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <div class="text-center bordo"><strong class="my-5">La tabella dei prezzi è vuota.</strong></div>
+                    <% } %>
+                    <div class="text-center">
+                        <a data-toggle="modal" data-target="#modal_add_new_price" class="btn btn-primary my-4 add_new_prices mx-2" style="color: aliceblue;">Aggiungi nuova voce dei prezzi</a>
+                        <a href="/service_paper_document_copy_request" class="btn btn-primary my-4 mx-2"
+                            style="color: aliceblue;">Torna alla lista delle richieste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal copy request message-->
+    <div class="modal fade" id="modal_add_new_price" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Nuova voce prezzi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_new_prices">
+                        <div class="form-group">
+                            <label for="range_min" class="col-form-label">Da pagina:</label>
+                            <input type="number" class="form-control" id="range_min" name="range_min" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="range_max" class="col-form-label">A pagina:</label>
+                            <input type="number" class="form-control" id="range_max" name="range_max" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="autentica_urgente" class="col-form-label">Autentica e Urgente:</label>
+                            <input type="number" class="form-control" id="autentica_urgente" name="autentica_urgente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="autentica_nonurgente" class="col-form-label">Autentica e non Urgente:</label>
+                            <input type="number" class="form-control" id="autentica_nonurgente" name="autentica_nonurgente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nonautentica_urgente" class="col-form-label">Non Autentica e Urgente:</label>
+                            <input type="number" class="form-control" id="nonautentica_urgente" name="nonautentica_urgente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nonautentica_nonurgente" class="col-form-label">Non Autentica e non Urgente:</label>
+                            <input type="number" class="form-control" id="nonautentica_nonurgente" name="nonautentica_nonurgente" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button submit" id="send_insert_new_price" class="btn btn-primary">Aggiungi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/Edit_prices_copy_document.js"></script>
+</body>

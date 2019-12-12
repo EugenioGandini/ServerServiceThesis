@@ -92,6 +92,35 @@
                                     <div class="float-left mt-2"><p><strong>Richiesta copie atti giudiziari</strong></div>
                                     <br>
                                     <hr>
+                                    <% if (total_pendent_copy_document == 0) { %>
+                                    <p>Nessuna richiesta</p>
+                                    <% } else { %>
+                                    <% pendent_copy_document.forEach(function(copy_request){ %>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <a href="/service_paper_document_copy_request"><%= copy_request.data.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>&nbsp;&nbsp;
+                                                <% if (copy_request.autentica == 1) { %>
+                                                    Autentica
+                                                <% } else { %>
+                                                    Non autentica
+                                                <% } %>
+                                                <% if (copy_request.urgente == 1) { %>
+                                                    Urgente
+                                                <% } else { %>
+                                                    Non urgente
+                                                <% } %>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <p><%= copy_request.status_request %></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <% }) %>
+                                    <% } %>
+                                    <% if (total_pendent_copy_document > 5) { %>
+                                    <a href="/service_paper_document_copy_request">e altre <%= total_pendent_copy_document-5 %> richiesta/e...</a>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>

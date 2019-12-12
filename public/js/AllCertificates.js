@@ -1,6 +1,11 @@
 var user_id
 var certificate_id
 
+$('#menu-toggle').click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
 $('#modal_replay').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     user_id = $($(button).children()[1]).text();
@@ -112,8 +117,6 @@ $('.delete_request').on('click', function(event) {
 })
 
 $('.select_status_request').on('change', function(event) {
-    console.log($(event.target).prev().text() + " into " + $(event.target).children("option:selected").val() + " user " + $(event.target).prev().prev().text());
-
     var question = confirm('Sei sicuro di aggiornare lo stato della richiesta in ' + $(event.target).children("option:selected").val());
     if (question === true) {
         $.ajax({
@@ -125,7 +128,7 @@ $('.select_status_request').on('change', function(event) {
                     window.location.reload();
                 },
                 default: function (response) {
-                    alert('Non è stato possibile eliminare la richiesta di certificato.')
+                    alert('Non è stato possibile cambiare lo stato della richiesta di certificato.')
                 }
             }
         });

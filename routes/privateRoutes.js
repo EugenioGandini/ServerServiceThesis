@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcryptjs');
+var myutils = require('./../my_utils/utils_function');
 
 var database_parameters = {
     host: "localhost",
@@ -38,14 +39,22 @@ router.get('/home_page_portal', (req, res, next) =>{
                 case court_stuff: {
                     con.query("SELECT certificates_request.oid, certificates_request.status_request, certificates_request.date_request, type_certificates.abbreviation_name, type_certificates.type_name " +
                               "FROM certificates_request INNER JOIN type_certificates ON certificates_request.oid_type_certificate=type_certificates.oid " +
-                              "WHERE NOT status_request='COMPLETATO' ORDER BY date_request DESC", function (err, result, fields) {
+                              "WHERE NOT status_request='COMPLETATO' ORDER BY date_request DESC", function (err, result_cert, fields) {
                         if (err) throw err;
-                        pendent_certificates = result.slice(0, 5);  // only first 5 new request of certificates
-                        res.render('HomePagePortalOffice.ejs', { 
-                            user: userData,
-                            pendent_certificates: pendent_certificates, 
-                            total_pendent_certificates: result.length});
-                        con.end();
+                            var pendent_certificates_val = result_cert.slice(0, 5);  // only first 5 new request of certificates
+                            var total_pendent_certificates_val = result_cert.length;
+                            con.query("SELECT data, status_request, autentica, urgente " + 
+                                      "FROM copy_document_request WHERE NOT status_request='COMPLETATO' " + 
+                                      "ORDER BY data DESC", function(err, result_copy_request, fields) {
+                            res.render('HomePagePortalOffice.ejs', {
+                                user: userData,
+                                pendent_certificates: pendent_certificates_val,
+                                total_pendent_certificates: total_pendent_certificates_val,
+                                pendent_copy_document: result_copy_request.slice(0,5),
+                                total_pendent_copy_document: result_copy_request.length
+                            });
+                            con.end();
+                        });
                     });
                     break;
                 }
@@ -63,7 +72,7 @@ router.post('/send_message', (req, res, next) => {
     else {
         var user_id_sender = req.session.user.oid;
         var user_id_receiver = parseInt(req.body.user_id);
-        var msg = req.body.msg;
+        var msg = myutils.parseTextInsertSql(req.body.msg);
 
         var con = mysql.createConnection(database_parameters);
         con.connect(function (err) {
