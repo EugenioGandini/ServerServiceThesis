@@ -59,7 +59,19 @@ router.get('/home_page_portal', (req, res, next) =>{
                     break;
                 }
                 case admin: {
-                    //TODO AMMINISTRATOR VIEW
+                    con.query("SELECT court_staff.username, court_staff.nome, court_staff.cognome, court_staff.oid, `group`.`groupname` " + 
+                              "FROM court_staff " + 
+                              "JOIN rel_staff_group ON rel_staff_group.oid_user_staff=court_staff.oid " + 
+                              "JOIN `group` ON `group`.`oid`=rel_staff_group.oid_group " + 
+                              "WHERE 1", function (err, result_users, fields) {
+                            if (err) throw err;
+
+                            res.render('HomePagePortalAdmin.ejs', {
+                                user: userData,
+                                users: result_users,
+                            });
+                            con.end();
+                        });
                     break;
                 }
             }
@@ -96,7 +108,12 @@ router.post('/update_data_user', (req, res, next) => {
         con.connect(function (err) {
             if (err) throw err;
             
-            var query_update_data = "UPDATE `user` SET ";
+            var query_update_data = "";
+            if(req.session.user.type_user == citizen){
+                query_update_data = "UPDATE `user` SET ";
+            } else {
+                query_update_data = "UPDATE `court_staff` SET ";
+            }
             query_update_data = query_update_data + " `oid`=" + req.session.user.oid;
             if (req.body.new_values.data_user_password != ""){
                 var salt = bcrypt.genSaltSync(10);
@@ -116,7 +133,7 @@ router.post('/update_data_user', (req, res, next) => {
                 req.session.user.ragione_sociale = req.body.new_values.data_user_rs;
             }
 
-            query_update_data = query_update_data + " WHERE user.oid=" + req.session.user.oid;
+            query_update_data = query_update_data + " WHERE oid=" + req.session.user.oid;
             con.query(query_update_data, function (err, result, fields) {
                 if (err) throw err;
                 con.end();
@@ -125,6 +142,51 @@ router.post('/update_data_user', (req, res, next) => {
                 res.end();
             });
         });
+    }
+})
+
+// This will remove an existing user from court_staff table and also auto-remove the realtion between user and group
+router.post('/remove_user', (req, res, next) => {
+    if (!req.session.user) next();
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            con.query("DELETE FROM `court_staff` WHERE `oid`=" + req.body.user, function(err, result, fields) {
+                if (err) throw err;
+                con.end();
+                res.status(200);
+                res.end();
+            })
+        })
+    }
+})
+
+// This will add a new user inside of court_staff table
+router.post('/add_new_user', (req, res, next) => {
+    if (!req.session.user) next();
+    else {
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(req.body.password, salt, function (err, res_hash) {
+                var new_password = res_hash;
+                var con = mysql.createConnection(database_parameters);
+                con.connect(function (err) {
+                    if (err) throw err;
+                    con.query("INSERT INTO `court_staff`(`username`, `nome`, `cognome`, `password`) VALUES ('" + req.body.username + "', '" + req.body.name + "', '" + req.body.surname + "', '" + new_password + "')", function (err, result, fields) {
+                        if (err) throw err;
+                        con.query("SELECT `oid` FROM `court_staff` WHERE `username`='" + req.body.username + "'", function (err, result_oid, fields) {
+                            if (err) throw err;
+                            con.query("INSERT INTO `rel_staff_group`(`oid_user_staff`, `oid_group`) VALUES (" + result_oid[0].oid + ", " + req.body.type_user + ")", function (err, result, fields) {
+                                if (err) throw err;
+                                con.end();
+                                res.status(200);
+                                res.end();
+                            })
+                        })
+                    })
+                })
+            })
+        })
     }
 })
 

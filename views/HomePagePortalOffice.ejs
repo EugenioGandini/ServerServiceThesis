@@ -47,6 +47,16 @@
                     <div class="float-right"><a class="btn btn-danger text-center" href="/logout">Esci</a></div>
                     <br>
                     <br>
+                    <div class="float-left">
+                        <a class="bordo" data-toggle="modal" data-target="#modal_edit_personal_data" style="cursor: pointer;">Modifica password d'accesso
+                            <img src="/img/modifica_ico.png" href="#" alt="icona di modifica" style="width: 34px;height: 34px;">
+                        </a>
+                        <span style="display: none;"><%= user.nome %></span>
+                        <span style="display: none;"><%= user.cognome %></span>
+                        <span style="display: none;"><%= user.username %></span>
+                    </div>
+                    <br>
+                    <br>
                     <br>
                     <p>Dal pannello laterale "Servizi" puoi accedere alle sezioni dedicate ai servizi telematici.</p>
                     <p>Qui sono mostrate le recenti richieste di servizi da parte dei cittadini.</p>
@@ -131,9 +141,49 @@
         </div>
     </div>
     
+    <div class="modal fade" id="modal_edit_personal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifica dati d'accesso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-update-data-user">
+                        <div class="form-group">
+                            <label for="data_username" class="col-form-label">Utente*:</label>
+                            <input type="text" class="form-control" id="data_username" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_name" class="col-form-label">Nome*:</label>
+                            <input type="text" class="form-control" id="data_user_name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_surname" class="col-form-label">Cognome*:</label>
+                            <input type="email" class="form-control" id="data_user_surname" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_password" class="col-form-label">Nuova password:</label>
+                            <input type="password" class="form-control" id="data_user_password" name="data_user_password"
+                                placeholder="**********">
+                        </div>
+                        <p> * : campi non modificabili.</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="send_update_data_user" class="btn btn-primary">Aggiorna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>
-    <script src="/js/Home_Page_Portal.js"></script>
+    <script src="/js/Home_Page_Portal_Office.js"></script>
 </body>
 </html>
