@@ -3,22 +3,20 @@ This is a prototype of some digital services offered by the Court of Brescia for
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
 These are the tool you have to install to get the project working:
 
 - Node.js v10.x
-- MySql database server (MariaDB)
+- SQL database server (MariaDB my choice)
 
 Ok so if you have these tools already installed than you can go forward to "Installing" section.
 If you don't have these above tools you can go here:
 
 * [Node.js v10.x](https://nodejs.org/en/) - Download and install version v10.x
-* [MySql database](https://www.apachefriends.org/it/index.html) - This is a set of tools containing MariaDB
-
-Note: If you want only the DB you can go also [here](https://mariadb.org/) and download and install only the DB.
+* [MariaDB](https://mariadb.org/) - This is MariaDB
 
 ### Installing
 
@@ -40,21 +38,35 @@ npm install
 ```
 ```
 Now we must set up the DB before startig the server.
-Start xampp.
+Start the db with command:
+mysqld 
+(if under Windows you have to launch mysqld.exe).
 ```
 ```
-Now we can go to [PhpMyAdmin](http://localhost/phpmyadmin/index.php) and create a new DB called: sito_tribunale_db
+Now we must at first create the db so from the shell:
+mysql -u root -p
+CREATE DATABASE 'sito_tribunale_db';
 ```
 ```
-Now we add a new user account for accessing DB by selecting the DB created and going under "Privileges" section.
-In this section we add a new user:
-* username: funzionario_tribunale
-* password: funzionario_tribunale
-and we give full privileges to this DB created.
+Now check if the db was created with:
+SHOW DATABASES;
 ```
 ```
-Now we can restore the DB pre-loaded by going under "Import" section and loading the dump_db.sql file that 
-you can find on dump_db folder of this project.
+We need to import the db information and structure so:
+exit
+mysql -u root -p sito_tribunale_db < dump_db.sql
+```
+```
+Add a new user with privileges to the new created db:
+mysqld -u root -p
+CREATE USER 'funzionario_tribunale' IDENTIFIED BY 'funzionario_tribunale';
+GRANT USAGE ON *.* TO 'funzionario_tribunale'@localhost IDENTIFIED BY 'funzionario_tribunale';
+GRANT ALL privileges ON `msito_tribunale_db`.* TO 'funzionario_tribunale'@localhost;
+FLUSH PRIVILEGES;
+```
+```
+Now we can verify if all is good by:
+SHOW GRANTS FOR 'funzionario_tribunale'@localhost;
 ```
 ```
 Ok if all goes well we are ready to start the server.
@@ -62,7 +74,7 @@ Go back to the console and type:
 node index.js
 ```
 ```
-The server will now start and you can access the site [here](192.168.1.10:14300/login).
+The server will now start and you can access the site [here](localhost:14300/login).
 ```
 
 ## Running the server
@@ -73,7 +85,8 @@ the project by launching the DB and the index.js.
 So the only step will be:
 
 ```
-Start xampp with MariaDB.
+Start MariaDB by typing:
+mysqld
 ```
 ```
 Open a console and type following commands:
