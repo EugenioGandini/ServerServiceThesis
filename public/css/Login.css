@@ -13,3 +13,11 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+p, label {
+    color: #525252 !important;
+}
+
+strong {
+    color: #036 !important;
+}

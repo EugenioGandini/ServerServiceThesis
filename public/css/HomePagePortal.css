@@ -1,4 +1,4 @@
-/*!
+/* !
  * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
  * Copyright 2013-2019 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
@@ -35,7 +35,7 @@ body {
 
 .bordo {
     border: 2px solid #CCCCCC;
-    border-radius: 15px;
+    border-radius: 0px;
     color: #000;
     padding: 10px;
     margin-top: 5px;
