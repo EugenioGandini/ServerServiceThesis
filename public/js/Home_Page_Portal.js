@@ -1,18 +1,66 @@
 var recipient
+var oid_sender_msg
 
-$('#menu-toggle').click(function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
+$("#sidebar").mCustomScrollbar({
+    theme: "minimal"
+});
+
+$('#dismiss, .overlay').on('click', function () {
+    $('#sidebar').removeClass('active');
+    $('.overlay').removeClass('active');
+});
+
+$('#sidebarCollapse').on('click', function () {
+    $('#sidebar').addClass('active');
+    $('.overlay').addClass('active');
+    $('.collapse.in').toggleClass('in');
+    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 });
 
 $('#modal_msg').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     
+    var replayable = $(button.parent().parent().children()[0]).text();
+    oid_sender_msg = $(button.parent().parent().children()[1]).text();
+
     recipient = button.data('whatever');
     var modal = $(this)
     modal.find('.modal-body input').val(recipient);
-    modal.find('.modal-body textarea').val($(button).next().text());
+    $('#message-text').text($(button).next().text());
+
+    if(replayable == 1) {
+        $('#message-text-replay').prop('disabled', false)
+        $('.msg-replay').show();
+        $('#btn-replay-msg').show();
+    }
 });
+
+$('#modal_msg').on('hidden.bs.modal', function (e) {
+    $('.msg-replay').hide();
+    $('#btn-replay-msg').hide();
+    $('#message-text-replay').val('');
+})
+
+$('#btn-replay-msg').on('click', function(e) {
+
+    $.ajax({
+        url: "/send_message",
+        type: "post",
+        data: { "user_id": oid_sender_msg, "msg": $('#message-text-replay').val() },
+        statusCode: {
+            200: function (response) {
+                alert('Messaggio inviato.');
+                $('#modal_msg').modal('hide');
+            },
+            401: function (response) {
+                alert("Errore: " + response.responseText);
+            },
+            400: function (response) {
+                alert("Errore nell'inviare il messaggio.");
+            }
+        }
+    });
+})
 
 $('#modal_edit_personal_data').on('show.bs.modal', function (event) {
     var modal = $(this)
@@ -71,3 +119,23 @@ $('#send_update_data_user').on('click', function () {
         alert('Nessun dato modificato.');
     }
 })
+
+$("#sidebar").mCustomScrollbar({
+    theme: "minimal"
+});
+
+$('#dismiss, .overlay').on('click', function () {
+    // hide sidebar
+    $('#sidebar').removeClass('active');
+    // hide overlay
+    $('.overlay').removeClass('active');
+});
+
+$('#sidebarCollapse').on('click', function () {
+    // open sidebar
+    $('#sidebar').addClass('active');
+    // fade in the overlay
+    $('.overlay').addClass('active');
+    $('.collapse.in').toggleClass('in');
+    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+});

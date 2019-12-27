@@ -26,12 +26,13 @@ router.get('/home_page_portal', (req, res, next) =>{
             var userMessages;
             switch (userData.type_user) {
                 case citizen: {
-                    con.query("SELECT m.date, m.oid, m.message, c.nome, c.cognome FROM messages AS m JOIN court_staff AS c ON c.oid=m.oid_user_sender " + 
+                    con.query("SELECT m.date, m.oid, m.oid_user_sender, m.message, m.replayable, c.nome, c.cognome FROM messages AS m JOIN court_staff AS c ON c.oid=m.oid_user_sender " + 
                               "WHERE oid_user_receiver=" + userData.oid + " " +
                               "ORDER BY m.date DESC", function (err, result, fields) {
                         if (err) throw err;
                         userMessages = result.slice(0, 5);  // only first 5 messages
-                        res.render('HomePagePortal.ejs', { user: userData, messages: userMessages });
+
+                        res.render('HomePagePortal.ejs', { user: userData, messages: userMessages, total_msg : result.length});
                         con.end();
                     });
                     break;
@@ -89,8 +90,8 @@ router.post('/send_message', (req, res, next) => {
         var con = mysql.createConnection(database_parameters);
         con.connect(function (err) {
             if (err) throw err;
-            con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`) VALUES (" +
-            user_id_receiver + ", " + user_id_sender + ", '" + msg + "')", function (err, result, fields) {
+            con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`, `replayable`, `update_service`) VALUES (" +
+            user_id_receiver + ", " + user_id_sender + ", '" + msg + "', '1', '0')", function (err, result, fields) {
                 if (err) throw err;
                 con.end();
                 console.log('New messagge arrived!');
@@ -212,5 +213,52 @@ router.get('/logout', (req, res, next) => {
         });
     }
 });
+
+router.get('/all_messages', (req, res, next) => {
+    if(!req.session.user) next();
+    else {
+        var con = mysql.createConnection(database_parameters);
+        con.connect(function (err) {
+            if (err) throw err;
+            var data_of_user = req.session.user;
+
+            var elements_per_page = 5;
+            var page_msg = 0;
+            if (req.query.pagina){
+                page_msg = req.query.pagina - 1;
+            }
+
+            var query_msg = "SELECT m.date, m.oid, m.oid_user_sender, m.message, m.update_service, m.replayable, c.nome, c.cognome FROM messages AS m JOIN user AS c ";
+            query_msg = query_msg + "ON c.oid=m.oid_user_sender WHERE oid_user_receiver=" + req.session.user.oid + " " + "ORDER BY m.date DESC";
+            con.query(query_msg, function (err, res_msgs, fields) {
+                if (err) throw err;
+                con.end();  
+
+                if(page_msg * elements_per_page >= res_msgs.length) {
+                    page_msg = 0;
+                }
+                var msg_to_res = res_msgs.slice(page_msg * elements_per_page, (page_msg * elements_per_page) + elements_per_page);
+
+                var total_pgs;
+                if (res_msgs.length % elements_per_page == 0){
+                    total_pgs = res_msgs.length / elements_per_page;
+                } else {
+                    total_pgs = (res_msgs.length / elements_per_page) + 1;
+                }
+                if(req.session.user.type_user != citizen){
+                    res.render('AllMessages.ejs', {citizen: false, 
+                                                   messages: msg_to_res, 
+                                                   total_pages: total_pgs,
+                                                   current_page : page_msg});
+                } else {
+                    res.render('AllMessages.ejs', {citizen: true, 
+                                                   messages: msg_to_res,
+                                                   total_pages: total_pgs,
+                                                   current_page : page_msg});
+                }
+            });
+        });
+    }
+})
 
 module.exports = router;

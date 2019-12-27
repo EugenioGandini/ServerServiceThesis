@@ -1,44 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="/img/favicon.ico"sizes="16x16">
-    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
-    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>Area Privata</title>
+
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/css/style3.css">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
 </head>
+
 <body>
-    <div class="d-flex toggled" id="wrapper">
 
-        <!--Sidebar-->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
-            <div class="list-group list-group-flush">
-                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
-                <a href="/service_paper_document_copy_request" class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="bg-light">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
             </div>
-        </div>
-        <!--Page content-->
 
-        <div id="page-content-wrapper">
+            <div class="sidebar-header">
+                <h3>Menu</h3>
+            </div>
 
-            <!--Nav Bar-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="col-sm-2">
-                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
-                </div>
-                <div class="col-sm-8 mt-4 text-center">
-                    <a class="no_underline_blue" href="/home_page_portal"><h1 class="display-4">Area Riservata</h1></a>
-                </div>
-                <div class="col-sm-2">
+            <ul class="list-unstyled components">
+                <li class="p-2">
+                    <a href="/home_page_portal" class="list-group-item list-group-item-action selected">Home</a>
+                </li>
+                <li class="p-2">
+                    <a href="#elenco_servizi" class="list-group-item list-group-item-action" data-toggle="collapse" aria-expanded="false">Servizi</a>
+                    <!-- <a href="#"  >Servizi</a> -->
+                    <ul class="collapse list-unstyled" id="elenco_servizi">
+                        <li class="p-2">
+                            <a href="/service_certificates_request" class="list-group-item list-group-item-action">Richiesta certificati</a>
+                        </li>
+                        <li class="p-2">
+                            <a href="/service_paper_document_copy_request" class="list-group-item list-group-item-action">Richiesta copie atti giudiziari</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="p-2">
+                    <a href="/all_messages" class="list-group-item list-group-item-action">Comunicazioni</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn bordo-btn">
+                        <img src="/img/menu_ico.png" alt="" style="width: 24px; height: 24px;">
+                        <strong>Menu</strong>
+                    </button>
+
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
                     <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia" title="Logo della Giustizia">
                 </div>
             </nav>
-        
-            <!--Middle content-->
+
+            <div class="container-fluid breadcrumb hiddenApp_ug">
+                <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Home</a>
+            </div>
+
             <div class="container-fluid mt-4">
                 <div class="col-sm-8 mx-auto">
                     <div class="float-left">
@@ -49,7 +90,6 @@
                     <br>
                     <br>
                     <p>Dal pannello laterale "Servizi" puoi accedere ai servizi offerti dal Tribunale di Brescia.</p>
-                    <p>Puoi sempre tornare alla home del pannello di controllo cliccando sul titolo "Area Riservata".</p>
                     <hr>
                     <div class="row">
                         <div class="col-lg-5">
@@ -57,8 +97,9 @@
                                 <div class="m-2">
                                     <div class="float-left mt-2"><strong>Dati personali</strong></div>
                                     <div class="float-right">
-                                        <a data-toggle="modal" data-target="#modal_edit_personal_data" style="cursor: pointer;">Modifica<img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
-                                                style="width: 34px;height: 34px;"></a>
+                                        <a data-toggle="modal" data-target="#modal_edit_personal_data"
+                                            style="cursor: pointer;">Modifica<img src="/img/modifica_ico.png" href="#" title="Modifica dati personali"
+                                                alt="icona di modifica" style="width: 34px;height: 34px;"></a>
                                     </div>
                                     <br>
                                     <div>
@@ -78,7 +119,8 @@
                                         <p><span>Indirizzo: </span><span id="indirizzo">Non specificato</span></p>
                                         <% } %>
                                         <% if (user.ragione_sociale) { %>
-                                        <p><span>Ragione Sociale: </span><span id="rag_sociale"><%= user.ragione_sociale %></span></p>
+                                        <p><span>Ragione Sociale: </span><span id="rag_sociale"><%= user.ragione_sociale %></span>
+                                        </p>
                                         <%} else { %>
                                         <p><span>Ragione Sociale: </span><span id="rag_sociale">Non specificato</span></p>
                                         <% } %>
@@ -89,10 +131,12 @@
                         <div class="col-lg-7">
                             <div class="bordo mx-2">
                                 <div class="m-2">
-                                    <div class="float-left mt-2"><p><strong>Messaggi</strong>&nbsp;&nbsp;&nbsp;<%= messages.length %></p></div>
+                                    <div class="float-left mt-2">
+                                        <p><a href="/all_messages" title="Comunicazioni"><strong>Messaggi</strong>&nbsp;&nbsp;&nbsp; <%= messages.length %></a></p>
+                                    </div>
                                     <div class="float-right">
-                                        <a href=""><img src="/img/messaggi_ico.png" href="#" alt="icona di tutti i messaggi"
-                                                style="width: 34px;height: 34px"></a>
+                                        <a href="/all_messages"><img src="/img/messaggi_ico.png" href="#" title="Comunicazioni"
+                                                alt="icona di tutti i messaggi" style="width: 34px;height: 34px"></a>
                                     </div>
                                     <br>
                                     <% if (messages.length == 0) { %>
@@ -111,17 +155,28 @@
                                         <tbody>
                                             <% messages.forEach(function(mesg){ %>
                                             <tr>
-                                                <td><%= mesg.date.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %></td>
+                                                <td style="display: none;"><%= mesg.replayable %></td>
+                                                <td style="display: none;"><%= mesg.oid_user_sender %></td>
+                                                <td><%= mesg.date.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %>
+                                                </td>
                                                 <td><%= mesg.nome %> <%= mesg.cognome %></td>
                                                 <td><%= mesg.message.substring(0,25) + '...' %></td>
                                                 <td class="text-center">
                                                     <a class="message_received" data-toggle="modal" data-target="#modal_msg"
-                                                    data-whatever="<%= mesg.nome %> <%= mesg.cognome %>" style="cursor: pointer;"><img src="/img/read_msg_ico.png"
-                                                        style="width: 25px;height: 25px"></a>
+                                                        data-whatever="<%= mesg.nome %> <%= mesg.cognome %>"
+                                                        style="cursor: pointer;"><img src="/img/read_msg_ico.png"
+                                                            style="width: 25px;height: 25px"></a>
                                                     <span style="display: none;"><%= mesg.message %></span>
                                                 </td>
                                             </tr>
                                             <% }) %>
+                                            <tr>
+                                                <td>
+                                                    <% if(total_msg > 5) { %>
+                                                    <a href="/all_messages">e altri <%= total_msg-5 %> messaggi...</a>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                     <% } %>
@@ -129,96 +184,110 @@
                             </div>
                         </div>
                     </div>
-                    
+            
+                </div>
+            </div>
+        </div>
+
+        <!-- modal message-->
+        <div class="modal fade" id="modal_msg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Messaggio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Mittente:</label>
+                                <input type="text" class="form-control" id="recipient-name" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text textarea-msg" class="col-form-label">Messaggio:</label>
+                                <textarea class="form-control" id="message-text" disabled="disabled"></textarea>
+                            </div>
+                            <div class="form-group msg-replay" style="display: none;">
+                                <label for="message-text-replay" class="col-form-label">Inserisci risposta:</label>
+                                <textarea class="form-control" id="message-text-replay" disabled="disabled"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        <button type="button" id="btn-replay-msg" class="btn btn-primary" style="display:none;"
+                            data-dismiss="modal">Rispondi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- modal personal data-->
+        <div class="modal fade" id="modal_edit_personal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modifica dati personali</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-update-data-user">
+                            <div class="form-group">
+                                <label for="data_user_name" class="col-form-label">Utente*:</label>
+                                <input type="text" class="form-control" id="data_user_name" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_email" class="col-form-label">E-mail*:</label>
+                                <input type="email" class="form-control" id="data_user_email" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_cf" class="col-form-label">Codice fiscale*:</label>
+                                <input type="text" class="form-control" id="data_user_cf" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_password" class="col-form-label">Nuova password:</label>
+                                <input type="password" class="form-control" id="data_user_password" name="data_user_password"
+                                    placeholder="**********">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_telefono" class="col-form-label">Telefono:</label>
+                                <input type="tel" class="form-control" id="data_user_telefono" name="data_user_telefono"
+                                    placeholder="Inserisci qui il tuo numero di telefono">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_indirizzo" class="col-form-label">Indirizzo:</label>
+                                <input type="text" class="form-control" id="data_user_indirizzo" name="data_user_indirizzo"
+                                    placeholder="Inserisci qui il tuo indirizzo">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_user_rs" class="col-form-label">Ragione Sociale:</label>
+                                <input type="text" class="form-control" id="data_user_rs" name="data_user_rs"
+                                    placeholder="Inserisci qui la tua ragione sociale">
+                            </div>
+                            <p> * : campi non modificabili.</p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        <button type="button" id="send_update_data_user" class="btn btn-primary">Aggiorna</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- modal certificate message-->
-    <div class="modal fade" id="modal_msg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Messaggio</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Destinatario:</label>
-                            <input type="text" class="form-control" id="recipient-name" disabled="disabled">
-                        </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Messaggio:</label>
-                            <textarea class="form-control" id="message-text" disabled="disabled"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal fade" id="modal_edit_personal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modifica dati personali</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-update-data-user">
-                        <div class="form-group">
-                            <label for="data_user_name" class="col-form-label">Utente*:</label>
-                            <input type="text" class="form-control" id="data_user_name" disabled="disabled">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_email" class="col-form-label">E-mail*:</label>
-                            <input type="text" class="form-control" id="data_user_email" disabled="disabled">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_cf" class="col-form-label">Codice fiscale*:</label>
-                            <input type="email" class="form-control" id="data_user_cf" disabled="disabled">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_password" class="col-form-label">Nuova password:</label>
-                            <input type="password" class="form-control" id="data_user_password" name="data_user_password" placeholder="**********">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_telefono" class="col-form-label">Telefono:</label>
-                            <input type="tel" class="form-control" id="data_user_telefono" name="data_user_telefono" placeholder="Inserisci qui il tuo numero di telefono">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_indirizzo" class="col-form-label">Indirizzo:</label>
-                            <input type="text" class="form-control" id="data_user_indirizzo" name="data_user_indirizzo" placeholder="Inserisci qui il tuo indirizzo">
-                        </div>
-                        <div class="form-group">
-                            <label for="data_user_rs" class="col-form-label">Ragione Sociale:</label>
-                            <input type="text" class="form-control" id="data_user_rs" name="data_user_rs" placeholder="Inserisci qui la tua ragione sociale">
-                        </div>
-                        <p> * : campi non modificabili.</p>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                    <button type="button" id="send_update_data_user" class="btn btn-primary">Aggiorna</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="overlay"></div>
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="/js/Home_Page_Portal.js"></script>
 </body>
 </html>

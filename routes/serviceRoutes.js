@@ -265,8 +265,8 @@ router.post('/update_certificate_request', (req, res, next) => {
                 // send a message notify to user
                 
                 var msg = "Aggiornamento della richiesta di certificato. Nuovo stato: " + req.body.new_status;
-                con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`) VALUES (" +
-                    req.body.user_request + ", " + req.session.user.oid + ", '" + msg + "')", function (err, result, fields) {
+                con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`, `update_service`) VALUES (" +
+                    req.body.user_request + ", " + req.session.user.oid + ", '" + msg + "', '1')", function (err, result, fields) {
                     if (err) throw err;
                     con.end();
                     console.log('New messagge arrived!');
@@ -331,8 +331,8 @@ router.post('/update_copy_document_request', (req, res, next) => {
                 // send a message notify to user
 
                 var msg = "Aggiornamento della richiesta di copia di un atto. Nuovo stato: " + req.body.new_status;
-                con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`) VALUES (" +
-                    req.body.user_request + ", " + req.session.user.oid + ", '" + msg + "')", function (err, result, fields) {
+                con.query("INSERT INTO `messages`(`oid_user_receiver`, `oid_user_sender`, `message`, `update_service`) VALUES (" +
+                    req.body.user_request + ", " + req.session.user.oid + ", '" + msg + "', '1')", function (err, result, fields) {
                         if (err) throw err;
                         con.end();
                         console.log('New messagge arrived!');
@@ -380,7 +380,7 @@ router.post('/add_request_copy_document', (req, res, next) => {
 
             var query_insert_request = "INSERT INTO `copy_document_request` (`nome_atto_giudiziario`, `copy_ci`, `copy_cf`, `autentica`, `urgente`, ";
             if(files.doc_aggiuntivo.name != "") {
-                query_insert_request = query_insert_request + "`other_doc`, `mimetype_doc_agg`, ";
+                query_insert_request = query_insert_request + "`other_doc`, `mimetype_other_doc`, ";
             }
             query_insert_request = query_insert_request + 
                 "`payment`, `oid_user`, `mimetype_copy_ci`, `mimetype_copy_cf`) VALUES (" +
@@ -519,6 +519,7 @@ router.post('/add_prices_copy_document', (req, res, next) => {
         })
     }
 })
+
 function insertCertificateProcedureFallimenti(req, res, files, fields){
     var con = mysql.createConnection(database_parameters);
     con.connect(function (err) {
@@ -586,6 +587,13 @@ function sendPageNewRequest(req, res){
 }
 
 function sendPageAllCertificates(req, res, dataUser){
+
+    var elements_per_page = 5;
+    var page_msg = 0;
+    if (req.query.pagina) {
+        page_msg = req.query.pagina - 1;
+    }
+
     switch (dataUser.type_user) {
         case citizen: {
             var con = mysql.createConnection(database_parameters);
@@ -599,7 +607,20 @@ function sendPageAllCertificates(req, res, dataUser){
                     , function (err, result, fields) {
                         if (err) throw err;
                         con.end();
-                        res.render('AllCertificates.ejs', { certificates: result, citizen: true });
+
+                        if (page_msg * elements_per_page >= result.length) {
+                            page_msg = 0;
+                        }
+                        var result_to_send = result.slice(page_msg * elements_per_page, (page_msg * elements_per_page) + elements_per_page);
+
+                        var total_pgs;
+                        if (result.length % elements_per_page == 0) {
+                            total_pgs = result.length / elements_per_page;
+                        } else {
+                            total_pgs = (result.length / elements_per_page) + 1;
+                        }
+
+                        res.render('AllCertificates.ejs', {certificates: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive: 0 });
                 });
             });
             break;
@@ -608,14 +629,33 @@ function sendPageAllCertificates(req, res, dataUser){
             var con = mysql.createConnection(database_parameters);
             con.connect(function (err) {
                 if (err) throw err;
-                con.query("SELECT t.date_request, t.oid, t.status_request, t.payment, p.abbreviation_name, r.nome, r.cognome, r.oid AS user_id " +
-                            "FROM `certificates_request` AS t " + 
-                            "JOIN user AS r ON t.oid_user = r.oid JOIN type_certificates AS p ON t.oid_type_certificate = p.oid " + 
-                            "ORDER BY t.status_request DESC, t.date_request DESC"
-                    , function (err, result, fields) {
-                        if (err) throw err;
-                        con.end();
-                        res.render('AllCertificates.ejs', { certificates: result, citizen: false});
+                var query_sql = "SELECT t.date_request, t.oid, t.status_request, t.payment, p.abbreviation_name, r.nome, r.cognome, r.oid AS user_id " +
+                    "FROM `certificates_request` AS t " +
+                    "JOIN user AS r ON t.oid_user = r.oid JOIN type_certificates AS p ON t.oid_type_certificate = p.oid ";
+                if(req.query.archive == 1){
+                    query_sql = query_sql + "WHERE t.status_request='COMPLETATO' ";
+                } else {
+                    query_sql = query_sql + "WHERE NOT t.status_request='COMPLETATO' ";
+                }
+                query_sql = query_sql + "ORDER BY t.status_request DESC, t.date_request DESC";
+
+                con.query(query_sql, function (err, result, fields) {
+                    if (err) throw err;
+                    con.end();
+
+                    if (page_msg * elements_per_page >= result.length) {
+                        page_msg = 0;
+                    }
+                    var result_to_send = result.slice(page_msg * elements_per_page, (page_msg * elements_per_page) + elements_per_page);
+
+                    var total_pgs;
+                    if (result.length % elements_per_page == 0) {
+                        total_pgs = result.length / elements_per_page;
+                    } else {
+                        total_pgs = (result.length / elements_per_page) + 1;
+                    }
+
+                res.render('AllCertificates.ejs', { certificates: result_to_send, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive});
                 });
             });
             break;
@@ -624,6 +664,13 @@ function sendPageAllCertificates(req, res, dataUser){
 }
 
 function sendPageAllRequestCopy(req, res, dataUser) {
+
+    var elements_per_page = 5;
+    var page_msg = 0;
+    if (req.query.pagina) {
+        page_msg = req.query.pagina - 1;
+    }
+
     switch (dataUser.type_user) {
         case citizen: {
             var con = mysql.createConnection(database_parameters);
@@ -637,7 +684,20 @@ function sendPageAllRequestCopy(req, res, dataUser) {
                     , function (err, result, fields) {
                         if (err) throw err;
                         con.end();
-                        res.render('AllRequestCopy.ejs', { copy_document_request: result, citizen: true });
+
+                        if (page_msg * elements_per_page >= result.length) {
+                            page_msg = 0;
+                        }
+                        var result_to_send = result.slice(page_msg * elements_per_page, (page_msg * elements_per_page) + elements_per_page);
+
+                        var total_pgs;
+                        if (result.length % elements_per_page == 0) {
+                            total_pgs = result.length / elements_per_page;
+                        } else {
+                            total_pgs = (result.length / elements_per_page) + 1;
+                        }
+
+                        res.render('AllRequestCopy.ejs', { copy_document_request: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive:0 });
                     });
             });
             break;
@@ -646,15 +706,34 @@ function sendPageAllRequestCopy(req, res, dataUser) {
             var con = mysql.createConnection(database_parameters);
             con.connect(function (err) {
                 if (err) throw err;
-                con.query("SELECT t.data, t.oid, t.nome_atto_giudiziario, t.status_request, t.payment, r.nome, r.cognome, r.oid AS user_id " +
+                var query_sql = "SELECT t.data, t.oid, t.nome_atto_giudiziario, t.status_request, t.payment, r.nome, r.cognome, r.oid AS user_id " +
                     "FROM `copy_document_request` AS t " +
-                    "JOIN user AS r ON t.oid_user = r.oid " +
-                    "ORDER BY t.status_request DESC, t.data DESC"
-                    , function (err, result, fields) {
-                        if (err) throw err;
-                        con.end();
-                        res.render('AllRequestCopy.ejs', { copy_document_request: result, citizen: false });
-                    });
+                    "JOIN user AS r ON t.oid_user = r.oid ";
+                if (req.query.archive == 1) {
+                    query_sql = query_sql + "WHERE t.status_request='COMPLETATO' ";
+                } else {
+                    query_sql = query_sql + "WHERE NOT t.status_request='COMPLETATO' ";
+                }
+                query_sql = query_sql + "ORDER BY t.status_request DESC, t.data DESC";
+
+                con.query(query_sql, function (err, result, fields) {
+                    if (err) throw err;
+                    con.end();
+
+                    if (page_msg * elements_per_page >= result.length) {
+                        page_msg = 0;
+                    }
+                    var result_to_send = result.slice(page_msg * elements_per_page, (page_msg * elements_per_page) + elements_per_page);
+
+                    var total_pgs;
+                    if (result.length % elements_per_page == 0) {
+                        total_pgs = result.length / elements_per_page;
+                    } else {
+                        total_pgs = (result.length / elements_per_page) + 1;
+                    }
+
+                    res.render('AllRequestCopy.ejs', { copy_document_request: result, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive });
+                });
             });
             break;
         }

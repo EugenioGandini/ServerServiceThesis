@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Comunicazioni</title>
+
+    <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/css/style3.css">
+
+    <link rel="stylesheet" href="/css/custom_style.css">
+
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="bg-light">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+
+            <div class="sidebar-header">
+                <h3>Menu</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="p-2">
+                    <a href="/home_page_portal" class="list-group-item list-group-item-action">Home</a>
+                </li>
+                <li class="p-2">
+                    <a href="#elenco_servizi" class="list-group-item list-group-item-action" data-toggle="collapse"
+                        aria-expanded="false">Servizi</a>
+                    <!-- <a href="#"  >Servizi</a> -->
+                    <ul class="collapse list-unstyled" id="elenco_servizi">
+                        <li class="p-2">
+                            <a href="/service_certificates_request"
+                                class="list-group-item list-group-item-action">Richiesta certificati</a>
+                        </li>
+                        <li class="p-2">
+                            <a href="/service_paper_document_copy_request"
+                                class="list-group-item list-group-item-action">Richiesta copie atti giudiziari</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="p-2">
+                    <a href="/all_messages" class="list-group-item list-group-item-action selected">Comunicazioni</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn bordo-btn">
+                        <img src="/img/menu_ico.png" alt="" style="width: 24px; height: 24px;">
+                        <strong>Menu</strong>
+                    </button>
+
+                    <a class="no_underline_blue" href="/home_page_portal">
+                        <h1 class="display-4">Area Riservata</h1>
+                    </a>
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
+                        title="Logo della Giustizia">
+                </div>
+            </nav>
+
+            <div class="container-fluid breadcrumb hiddenApp_ug">
+                <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Home</a><span>&nbsp;&gt;&nbsp;</span><a href="/all_messages">Comunicazioni</a>
+            </div>
+
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <div>
+                        <% if(!citizen) { %>
+                            <h5 class="text-center">Comunicazioni dei cittadini</h5>
+                            <br>
+                            <p>Elenco dei messaggi ricevuti dai cittadini:</p>
+                        <% } else { %>
+                            <h5 class="text-center">Comunicazioni dalla cancelleria</h5>
+                            <br>
+                            <br>
+                            <div class="text-center">
+                                <span class="text-center">Elenco di tutti i tuoi messaggi:
+                                    <div class="popup">(info)
+                                        <span class="popuptext" id="myPopup">In quest'area puoi vedere le tue comunicazioni/messaggi che la cancelleria ti
+                                            ha inviato. Potrai eventualmente
+                                            rispondere alle sole comunicazioni ricevute.</span>
+                                    </div>
+                                </span>
+                            </div>
+                        <% } %>
+                    </div>
+                    <hr>
+                    <% if(messages.length > 0) { %>
+                    <div class="my-4">Pagina: 
+                        <% for(var i = 1; i <= total_pages; i++) { %>
+                            <% if((current_page + 1) == i) { %>
+                                <a href="/all_messages?pagina=<%= i %>" class="btn btn-info" style="background-color: grey; width: 30px; border-color: black;"><%= i %></a>
+                            <% } else { %>
+                                <a href="/all_messages?pagina=<%= i %>" class="btn" style="border-color: black;"><%= i %></a>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <table class="table bordo-tabella">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data</th>
+                                <th scope="col">Mittente</th>
+                                <th scope="col">Messaggio</th>
+                                <th scope="col">Tipologia</th>
+                                <th class="text-center" scope="col">
+                                    <% if (!citizen) { %>
+                                    Comandi
+                                    <% } else { %>
+                                    Dettagli
+                                    <% } %>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% messages.forEach(function(msg){ %>
+                            <tr>
+                                <td style="display: none;"><%= msg.oid %></td>
+                                <td style="display: none;"><%= msg.message %></td>
+                                <td style="display: none;"><%= msg.oid_user_sender %></td>
+                                <td style="display: none;"><%= msg.replayable %></td>
+                                <td><%= msg.date.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}) %>
+                                </td>
+                                <td><%= msg.nome %> <%= msg.cognome %></td>
+                                <td><%= msg.message.substring(0,25) + '...' %></td>
+                                <td>
+                                    <% if(msg.update_service == 1) { %>
+                                        Aggiornamento servizio
+                                    <% } else { %>
+                                        Comunicazione
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <a class="see" data-toggle="modal" data-target="#modal_msg" style="cursor: pointer;">
+                                        <img src="/img/read_msg_ico.png" style="width: 34px;height: 34px">
+                                    </a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <div class="text-center bordo"><strong class="my-5">Nessuna messaggio ricevuto.</strong></div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal message detail-->
+    <div class="modal fade" id="modal_msg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Messaggio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Mittente:</label>
+                            <input type="text" class="form-control" id="recipient-name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text textarea-msg" class="col-form-label">Messaggio:</label>
+                            <textarea class="form-control" id="message-text" disabled="disabled"></textarea>
+                        </div>
+                        <div class="form-group msg-replay" style="display: none;">
+                            <label for="message-text-replay" class="col-form-label">Inserisci risposta:</label>
+                            <textarea class="form-control" id="message-text-replay" disabled="disabled"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="btn-replay-msg" class="btn btn-primary" style="display:none;" data-dismiss="modal">Rispondi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/js/AllMessages.js"></script>
+</body>
+</html>

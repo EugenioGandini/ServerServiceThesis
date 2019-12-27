@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/img/favicon.ico"sizes="16x16">
+    <link rel="stylesheet" href="/css/bootstrapV4.min.css">
+    <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <title>Area Privata</title>
+</head>
+<body>
+    <div class="d-flex toggled" id="wrapper">
+
+        <!--Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
+            <div class="list-group list-group-flush">
+                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light">Richiesta certificati</a>
+                <a href="/service_paper_document_copy_request" class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+            </div>
+        </div>
+        <!--Page content-->
+
+        <div id="page-content-wrapper">
+
+            <!--Nav Bar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="col-sm-2">
+                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
+                </div>
+                <div class="col-sm-8 mt-4 text-center">
+                    <a class="no_underline_blue" href="/home_page_portal"><h1 class="display-4">Area Riservata</h1></a>
+                </div>
+                <div class="col-sm-2">
+                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </nav>
+        
+            <!--Middle content-->
+            <div class="container-fluid mt-4">
+                <div class="col-sm-8 mx-auto">
+                    <div class="float-left">
+                        <h4>Benvenuto/a, <%= user.nome %> <%= user.cognome %>.</h4>
+                    </div>
+                    <div class="float-right"><a class="btn btn-danger text-center" href="/logout">Esci</a></div>
+                    <br>
+                    <br>
+                    <br>
+                    <p>Dal pannello laterale "Servizi" puoi accedere ai servizi offerti dal Tribunale di Brescia.</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="float-left mt-2"><strong>Dati personali</strong></div>
+                                    <div class="float-right">
+                                        <a data-toggle="modal" data-target="#modal_edit_personal_data" style="cursor: pointer;">Modifica<img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
+                                                style="width: 34px;height: 34px;"></a>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <hr>
+                                        <p><span>Utente: </span><span id="nome"><%= user.nome %> <%= user.cognome %></span></p>
+                                        <p><span>E-mail: </span><span id="email"><%= user.email %></span></p>
+                                        <p><span>Codice Fiscale: </span><span id="c_f"><%= user.codicefiscale %></span></p>
+                                        <p>Password: ********</p>
+                                        <% if (user.telefono) { %>
+                                        <p><span>Telefono: </span><span id="telefono"><%= user.telefono %></span></p>
+                                        <%} else { %>
+                                        <p><span>Telefono: </span><span id="telefono">Non specificato</span></p>
+                                        <% } %>
+                                        <% if (user.indirizzo) { %>
+                                        <p><span>Indirizzo: </span><span id="indirizzo"><%= user.indirizzo %></span></p>
+                                        <%} else { %>
+                                        <p><span>Indirizzo: </span><span id="indirizzo">Non specificato</span></p>
+                                        <% } %>
+                                        <% if (user.ragione_sociale) { %>
+                                        <p><span>Ragione Sociale: </span><span id="rag_sociale"><%= user.ragione_sociale %></span></p>
+                                        <%} else { %>
+                                        <p><span>Ragione Sociale: </span><span id="rag_sociale">Non specificato</span></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="bordo mx-2">
+                                <div class="m-2">
+                                    <div class="float-left mt-2"><p><strong>Messaggi</strong>&nbsp;&nbsp;&nbsp;<%= messages.length %></p></div>
+                                    <div class="float-right">
+                                        <a href="/all_messages"><img src="/img/messaggi_ico.png" href="#" alt="icona di tutti i messaggi"
+                                                style="width: 34px;height: 34px"></a>
+                                    </div>
+                                    <br>
+                                    <% if (messages.length == 0) { %>
+                                    <br>
+                                    <p>Nessun messaggio</p>
+                                    <% } else { %>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Data</th>
+                                                <th scope="col">Mittente</th>
+                                                <th scope="col">Testo</th>
+                                                <th scope="col" class="text-center">Vedi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% messages.forEach(function(mesg){ %>
+                                            <tr>
+                                                <td style="display: none;"><%= mesg.replayable %></td>
+                                                <td style="display: none;"><%= mesg.oid_user_sender %></td>
+                                                <td><%= mesg.date.toLocaleDateString('it-IT', {day: 'numeric', month: 'numeric', year: 'numeric'}); %></td>
+                                                <td><%= mesg.nome %> <%= mesg.cognome %></td>
+                                                <td><%= mesg.message.substring(0,25) + '...' %></td>
+                                                <td class="text-center">
+                                                    <a class="message_received" data-toggle="modal" data-target="#modal_msg"
+                                                    data-whatever="<%= mesg.nome %> <%= mesg.cognome %>" style="cursor: pointer;"><img src="/img/read_msg_ico.png"
+                                                        style="width: 25px;height: 25px"></a>
+                                                    <span style="display: none;"><%= mesg.message %></span>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                            <tr>
+                                                <td>
+                                                <% if(total_msg > 5) { %>
+                                                    <a href="/all_messages">e altri <%= total_msg-5 %> messaggi...</a>
+                                                <% } %>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal message-->
+    <div class="modal fade" id="modal_msg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Messaggio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Mittente:</label>
+                            <input type="text" class="form-control" id="recipient-name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text textarea-msg" class="col-form-label">Messaggio:</label>
+                            <textarea class="form-control" id="message-text" disabled="disabled"></textarea>
+                        </div>
+                        <div class="form-group msg-replay" style="display: none;">
+                            <label for="message-text-replay" class="col-form-label">Inserisci risposta:</label>
+                            <textarea class="form-control" id="message-text-replay" disabled="disabled"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="btn-replay-msg" class="btn btn-primary" style="display:none;" data-dismiss="modal">Rispondi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal personal data-->
+    <div class="modal fade" id="modal_edit_personal_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifica dati personali</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-update-data-user">
+                        <div class="form-group">
+                            <label for="data_user_name" class="col-form-label">Utente*:</label>
+                            <input type="text" class="form-control" id="data_user_name" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_email" class="col-form-label">E-mail*:</label>
+                            <input type="email" class="form-control" id="data_user_email" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_cf" class="col-form-label">Codice fiscale*:</label>
+                            <input type="text" class="form-control" id="data_user_cf" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_password" class="col-form-label">Nuova password:</label>
+                            <input type="password" class="form-control" id="data_user_password" name="data_user_password" placeholder="**********">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_telefono" class="col-form-label">Telefono:</label>
+                            <input type="tel" class="form-control" id="data_user_telefono" name="data_user_telefono" placeholder="Inserisci qui il tuo numero di telefono">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_indirizzo" class="col-form-label">Indirizzo:</label>
+                            <input type="text" class="form-control" id="data_user_indirizzo" name="data_user_indirizzo" placeholder="Inserisci qui il tuo indirizzo">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_user_rs" class="col-form-label">Ragione Sociale:</label>
+                            <input type="text" class="form-control" id="data_user_rs" name="data_user_rs" placeholder="Inserisci qui la tua ragione sociale">
+                        </div>
+                        <p> * : campi non modificabili.</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" id="send_update_data_user" class="btn btn-primary">Aggiorna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/Home_Page_Portal.js"></script>
+</body>
+</html>

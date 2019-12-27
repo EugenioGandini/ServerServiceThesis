@@ -1,75 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Certificati</title>
+
     <link rel="icon" href="/img/favicon.ico" sizes="16x16">
+
+    <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="/css/bootstrapV4.min.css">
-    <link rel="stylesheet" href="/css/HomePagePortal.css">
-    <title>Richiesta Certificati</title>
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/css/style3.css">
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
 </head>
+
 <body>
-    <div class="d-flex toggled" id="wrapper">
-    
-        <!--Sidebar-->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Servizi telematici del Tribunale di Brescia.</div>
-            <div class="list-group list-group-flush">
-                <a href="/service_certificates_request" class="list-group-item list-group-item-action bg-light selected">Richiesta
-                    certificati</a>
-                <a href="/service_paper_document_copy_request"
-                    class="list-group-item list-group-item-action bg-light">Richiesta copie atti giudiziari</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Under construction</a>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar" class="bg-light">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
             </div>
-        </div>
-        <!--Page content-->
-    
-        <div id="page-content-wrapper">
-    
-            <!--Nav Bar-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="col-sm-2">
-                    <button class="btn btn-info" id="menu-toggle">Servizi</button>
-                </div>
-                <div class="col-sm-8 mt-4 text-center">
+
+            <div class="sidebar-header">
+                <h3>Menu</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="p-2">
+                    <a href="/home_page_portal" class="list-group-item list-group-item-action">Home</a>
+                </li>
+                <li class="p-2">
+                    <a href="#elenco_servizi" class="list-group-item list-group-item-action selected"
+                        data-toggle="collapse" aria-expanded="false">Servizi</a>
+                    <!-- <a href="#"  >Servizi</a> -->
+                    <ul class="collapse list-unstyled" id="elenco_servizi">
+                        <li class="p-2">
+                            <a href="/service_certificates_request"
+                                class="list-group-item list-group-item-action selected">Richiesta certificati</a>
+                        </li>
+                        <li class="p-2">
+                            <a href="/service_paper_document_copy_request"
+                                class="list-group-item list-group-item-action">Richiesta copie atti giudiziari</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="p-2">
+                    <a href="/all_messages" class="list-group-item list-group-item-action">Comunicazioni</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn bordo-btn">
+                        <img src="/img/menu_ico.png" alt="" style="width: 24px; height: 24px;">
+                        <strong>Menu</strong>
+                    </button>
+
                     <a class="no_underline_blue" href="/home_page_portal">
                         <h1 class="display-4">Area Riservata</h1>
                     </a>
-                </div>
-                <div class="col-sm-2">
                     <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
                         title="Logo della Giustizia">
                 </div>
             </nav>
+
+            <div class="container-fluid breadcrumb hiddenApp_ug">
+                <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Home</a><span>&nbsp;&gt;&nbsp;</span><a
+                    href="/service_certificates_request">Servizio richiesta certificati</a><span>&nbsp;&gt;&nbsp;</span><a href="/add_request_certificate">Richiesta nuovo certificato</a>
+            </div>
     
             <!--Middle content-->
 
-            <div class="container-fluid mt-4">
-                <div class="col-sm-8 mx-auto">
+            <div class="container-fluid my-4">
+                <div class="col-sm-8 mx-auto bordo">
                     <h4 class="text-center my-4">Richiesta copia atti giudiziari</h4>
-                    <p>1) Selezionare il certificato che si intende richiedere.</p>
-                    <select class="custom-select mt-2">
-                        <option selected>-</option>
-                        <% certificates.forEach(function(cert){ %>
-                        <option value="<%= cert.oid %>"><%= cert.type_name %></option>
-                        <% }) %>
-                    </select>
+                    <div class="text-center p-3">
+                        <p>1) Selezionare il certificato che si intende richiedere.</p>
+                        <select class="custom-select mt-2 col-lg-6">
+                            <option selected>-</option>
+                            <% certificates.forEach(function(cert){ %>
+                            <option value="<%= cert.oid %>"><%= cert.type_name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div id="placeholder_form"></div>
                 </div>
                 <div id="placeholder_form">
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="overlay"></div>
+    
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrapV4.min.js"></script>
+    <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="/js/CertificatesRequest.js"></script>
-
-    <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault(); $("#wrapper").toggleClass("toggled"); 
-        });
-    </script>
 </body>
 </html>

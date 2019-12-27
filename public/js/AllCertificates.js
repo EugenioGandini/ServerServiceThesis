@@ -1,9 +1,25 @@
 var user_id
 var certificate_id
 
-$('#menu-toggle').click(function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
+$("#sidebar").mCustomScrollbar({
+    theme: "minimal"
+});
+
+$('#dismiss, .overlay').on('click', function () {
+    $('#sidebar').removeClass('active');
+    $('.overlay').removeClass('active');
+});
+
+$('#sidebarCollapse').on('click', function () {
+    $('#sidebar').addClass('active');
+    $('.overlay').addClass('active');
+    $('.collapse.in').toggleClass('in');
+    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+});
+
+$('.popup').hover(function () {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
 });
 
 $('#modal_replay').on('show.bs.modal', function (event) {
