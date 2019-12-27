@@ -367,14 +367,14 @@ router.post('/add_request_copy_document', (req, res, next) => {
             if (err) throw err;
 
             //var path_ci = path.join(__dirname) + "/../private/data_certificates/" + files.ci.name;
-            var path_ci = path.dirname(files.ci.path) + "\\" + "C_I" + path.extname(files.ci.name);
+            var path_ci = path.join(path.dirname(files.ci.path), "C_I" + path.extname(files.ci.name));
             fs.renameSync(files.ci.path, path_ci);
 
-            var path_cf = path.dirname(files.cf.path) + "\\" + "C_F" + path.extname(files.cf.name);
+            var path_cf = path.join(path.dirname(files.cf.path), "C_F" + path.extname(files.cf.name));
             fs.renameSync(files.cf.path, path_cf);
 
             if(files.doc_aggiuntivo.name != "") {
-                var path_doc_agg = path.dirname(files.doc_aggiuntivo.path) + "\\" + "DOC_AGG" + path.extname(files.doc_aggiuntivo.name);
+                var path_doc_agg = path.join(path.dirname(files.doc_aggiuntivo.path), "DOC_AGG" + path.extname(files.doc_aggiuntivo.name));
                 fs.renameSync(files.doc_aggiuntivo.path, path_doc_agg);
             }
 
@@ -384,9 +384,9 @@ router.post('/add_request_copy_document', (req, res, next) => {
             }
             query_insert_request = query_insert_request + 
                 "`payment`, `oid_user`, `mimetype_copy_ci`, `mimetype_copy_cf`) VALUES (" +
-                "'" + fields.nome_atto + "', " + "LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_I" + path.extname(files.ci.name) + "'), LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_F" + path.extname(files.cf.name) + "'), " + fields.autentica + ", " + fields.urgente;
+                "'" + fields.nome_atto + "', " + "LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), " + fields.autentica + ", " + fields.urgente;
             if (files.doc_aggiuntivo.name != "") {
-                query_insert_request = query_insert_request + ", LOAD_FILE('C:/Users/heero/AppData/Local/Temp/DOC_AGG" + path.extname(files.doc_aggiuntivo.name) + "'), '" + files.doc_aggiuntivo.type + "'";
+                query_insert_request = query_insert_request + ", LOAD_FILE('" + path_doc_agg.replace(/\\/g, '/') + "'), '" + files.doc_aggiuntivo.type + "'";
             }
             query_insert_request = query_insert_request + ", FALSE, '" + req.session.user.oid + "', '" + files.ci.type + "', '" + files.cf.type + "')";
 
@@ -526,14 +526,14 @@ function insertCertificateProcedureFallimenti(req, res, files, fields){
         if (err) throw err;
 
         //var path_ci = path.join(__dirname) + "/../private/data_certificates/" + files.ci.name;
-        var path_ci = path.dirname(files.ci.path) + "\\" + "C_I" + path.extname(files.ci.name);
+        var path_ci = path.join(path.dirname(files.ci.path), "C_I" + path.extname(files.ci.name));
         fs.renameSync(files.ci.path, path_ci);
 
-        var path_cf = path.dirname(files.cf.path) + "\\" + "C_F" + path.extname(files.cf.name);
+        var path_cf = path.join(path.dirname(files.cf.path), "C_F" + path.extname(files.cf.name));
         fs.renameSync(files.cf.path, path_cf);
 
         var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, company, mimetype_copy_ci, mimetype_copy_cf) VALUES (" +
-            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_I" + path.extname(files.ci.name) + "'), LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_F" + path.extname(files.cf.name) + "'), '" +
+            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), '" +
             myutils.parseTextInsertSql(fields.uso) + "', TRUE, '" + myutils.parseTextInsertSql(fields.ditta) + "', '" + files.ci.type + "', '" + files.cf.type + "')";
         con.query(query_insert_request, function (err, result, fields) {
             if (err) throw err;
@@ -553,14 +553,14 @@ function insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields
         if (err) throw err;
 
         //var path_ci = path.join(__dirname) + "/../private/data_certificates/" + files.ci.name;
-        var path_ci = path.dirname(files.ci.path) + "\\" + "C_I" + path.extname(files.ci.name);
+        var path_ci = path.join(path.dirname(files.ci.path), "C_I" + path.extname(files.ci.name));
         fs.renameSync(files.ci.path, path_ci);
 
-        var path_cf = path.dirname(files.cf.path) + "\\" + "C_F" + path.extname(files.cf.name);
+        var path_cf = path.join(path.dirname(files.cf.path), "C_F" + path.extname(files.cf.name));
         fs.renameSync(files.cf.path, path_cf);
 
         var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, bene, mimetype_copy_ci, mimetype_copy_cf) VALUES (" +
-            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_I" + path.extname(files.ci.name) + "'), LOAD_FILE('C:/Users/heero/AppData/Local/Temp/C_F" + path.extname(files.cf.name) + "'), '" +
+            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), '" +
             myutils.parseTextInsertSql(fields.uso) + "', TRUE, '" + myutils.parseTextInsertSql(fields.bene) + "', '" + files.ci.type + "', '" + files.cf.type + "')";
         con.query(query_insert_request, function (err, result, fields) {
             if (err) throw err;

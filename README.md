@@ -45,7 +45,7 @@ mysqld
 ```
 Now we must at first create the db so from the shell:
 mysql -u root -p
-CREATE DATABASE 'sito_tribunale_db';
+CREATE DATABASE sito_tribunale_db;
 ```
 ```
 Now check if the db was created with:
@@ -58,10 +58,10 @@ mysql -u root -p sito_tribunale_db < dump_db.sql
 ```
 ```
 Add a new user with privileges to the new created db:
-mysqld -u root -p
+mysql -u root -p
 CREATE USER 'funzionario_tribunale' IDENTIFIED BY 'funzionario_tribunale';
 GRANT USAGE ON *.* TO 'funzionario_tribunale'@localhost IDENTIFIED BY 'funzionario_tribunale';
-GRANT ALL privileges ON `sito_tribunale_db`.* TO 'funzionario_tribunale'@localhost;
+GRANT ALL privileges ON sito_tribunale_db.* TO 'funzionario_tribunale'@localhost;
 FLUSH PRIVILEGES;
 ```
 ```
