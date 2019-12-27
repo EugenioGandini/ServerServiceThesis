@@ -61,7 +61,7 @@ Add a new user with privileges to the new created db:
 mysqld -u root -p
 CREATE USER 'funzionario_tribunale' IDENTIFIED BY 'funzionario_tribunale';
 GRANT USAGE ON *.* TO 'funzionario_tribunale'@localhost IDENTIFIED BY 'funzionario_tribunale';
-GRANT ALL privileges ON `msito_tribunale_db`.* TO 'funzionario_tribunale'@localhost;
+GRANT ALL privileges ON `sito_tribunale_db`.* TO 'funzionario_tribunale'@localhost;
 FLUSH PRIVILEGES;
 ```
 ```
