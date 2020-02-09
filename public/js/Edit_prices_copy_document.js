@@ -127,3 +127,11 @@ $('#send_insert_new_price').on('click', function(e) {
         alert("E' necessario riempire tutti i campi per poter inserire una nuova voce dei prezzi.")
     }
 })
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
+    }
+})

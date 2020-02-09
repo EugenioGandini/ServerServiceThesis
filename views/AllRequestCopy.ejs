@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/bootstrapV4.min.css">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="/css/style3.css">
+    <link rel="stylesheet" href="/css/flaty.css">
+    <link rel="stylesheet" href="/css/header_footer.css">
     <link rel="stylesheet" href="/css/custom_style.css">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet"
@@ -32,68 +34,228 @@
 <body>
 
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar" class="bg-light">
-            <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="sidebar-header">
-                <h3>Menu</h3>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li class="p-2">
-                    <a href="/home_page_portal" class="list-group-item list-group-item-action">Home</a>
-                </li>
-                <li class="p-2">
-                    <a href="#elenco_servizi" class="list-group-item list-group-item-action selected" data-toggle="collapse"
-                        aria-expanded="false">Servizi</a>
-                    <!-- <a href="#"  >Servizi</a> -->
-                    <ul class="collapse list-unstyled" id="elenco_servizi">
-                        <li class="p-2">
-                            <a href="/service_certificates_request"
-                                class="list-group-item list-group-item-action">Richiesta certificati</a>
-                        </li>
-                        <li class="p-2">
-                            <a href="/service_paper_document_copy_request"
-                                class="list-group-item list-group-item-action selected">Richiesta copie atti giudiziari</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-2">
-                    <a href="/all_messages" class="list-group-item list-group-item-action">Comunicazioni</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Page Content  -->
         <div id="content">
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="row">
+                <div class="col-sm-5" style="padding-left: 0px; padding-right: 0px;">
+                    <a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/default.aspx"
+                        title="Tribunale di brescia">
+                        <img src="/img/header.jpg" alt="Logo Ufficio Giudiziario" title="Logo Ufficio Giudiziario"></a>
+                </div>
+                <div class="col-sm-4 mt-4" style="padding-left: 0px; padding-right: 0px;">
+                    <div id="ctl00_header_pnlCerca" class="cercabox"
+                        onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_header_btnCerca')">
+                        <div class="input-group">
+                            <label for="ctl00_header_txtCerca" id="ctl00_header_lbl_cerca"></label>
+                            <input name="ctl00$header$txtCerca" type="text" value="Cerca nel sito" maxlength="30"
+                                id="ctl00_header_txtCerca" title="Cerca nel sito"
+                                onblur="if (value == '' ) { value = 'Cerca nel sito'}"
+                                onfocus="if (value == 'Cerca nel sito') {value = '' }" class="form-control input-sm">
+                            <span class="input-group-btn">
+                                <a id="ctl00_header_btnCerca" title="bottone cerca nel sito" class=""
+                                    href="javascript:__doPostBack('ctl00$header$btnCerca','')"><img src="/img/search_ico.jpg"></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="padding-left: 0px; padding-right: 0px;">
+                    <img class="float-right" src="/img/logo_giustizia.jpg" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </div>
+            
+            <nav class="navbar-default">
                 <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="btn bordo-btn">
-                        <img src="/img/menu_ico.png" alt="" style="width: 24px; height: 24px;">
-                        <strong>Menu</strong>
-                    </button>
-
-                    <a class="no_underline_blue" href="/home_page_portal">
-                        <h1 class="display-4">Area Riservata</h1>
-                    </a>
-                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
-                        title="Logo della Giustizia">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-tribunale">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+            
+                    <div class="collapse navbar-collapse" id="nav-tribunale">
+                        <ul class="nav navbar-nav">
+                            <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/default.aspx"
+                                    id="ctl00_menu_navigazione_link_0">Home</a></li>
+                            <li id="ctl00_menu_navigazione_link_1"><a class="link_esterno hidden-xs"
+                                    href="http://www.tribunale.brescia.giustizia.it/elenco_chisiamo.aspx">Il Tribunale</a
+                                    class="link_esterno"></li>
+                            <li class="dropdown visible-xs">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Il
+                                    Tribunale <span class="caret float-right"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/elenco_chisiamo.aspx"
+                                            title="Chi siamo">Chi siamo</a class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/elenco_cosafacciamo.aspx"
+                                            title="Cosa facciamo">Cosa facciamo</a class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/elenco_comeraggiungerci.aspx"
+                                            title="Come arrivare">Come raggiungerci</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/elenco_comunicare.aspx"
+                                            title="Per comunicare con noi">Per comunicare con noi</a class="link_esterno"></li>
+                                    <li><a href="/login" title="Area Riservata">Area Riservata</a class="link_esterno">
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="ctl00_menu_navigazione_link_2"><a class="link_esterno hidden-xs"
+                                    href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/informazioni.aspx">Uffici
+                                    Giudiziari del Distretto</a class="link_esterno"></li>
+                            <li class="dropdown visible-xs">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-expanded="false">Uffici Giudiziari del
+                                    Distretto <span class="caret float-right"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/informazioni.aspx"
+                                            title="Informazioni generali degli uffici giudiziari">Informazioni generali</a
+                                            class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/html_distrettuali.aspx"
+                                            title="Informazioni Uffici Distrettuali">Uffici Distrettuali (Corte d'Appello di
+                                            Brescia)</a class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/circ_brescia.aspx"
+                                            title="Informazioni Circondario di Brescia">Circondario di Brescia</a
+                                            class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/html_bergamo.aspx"
+                                            title="Informazioni Circondario di Bergamo">Circondario di Bergamo</a
+                                            class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/html_crema.aspx"
+                                            title="Informazioni Circondario di Crema">Circondario di Crema</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/html_cremona.aspx"
+                                            title="Informazioni Circondario di Cremona">Circondario di Cremona</a
+                                            class="link_esterno"></li>
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/ufficigiudiziari_distretto/html_mantova.aspx"
+                                            title="Informazioni Circondario di Mantova">Circondario di Mantova</a
+                                            class="link_esterno"></li>
+                                </ul>
+                            </li>
+                            <li id="ctl00_menu_navigazione_link_3"><a class="link_esterno hidden-xs"
+                                    href="http://www.tribunale.brescia.giustizia.it/guida_ai_servizi.aspx">Servizi per
+                                    l'utenza</a class="link_esterno"></li>
+                            <li class="dropdown visible-xs">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-expanded="false">Servizi per l'utenza
+                                    <span class="caret float-right"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="link_esterno"
+                                            href="http://www.tribunale.brescia.giustizia.it/guida_ai_servizi.aspx"
+                                            title="Come fare per...">Come fare per...</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/certificazioni.aspx"
+                                            title="Certificazioni">Certificazioni</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/utility.aspx"
+                                            title="Utility">Utility</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/ricerca_ctu.aspx"
+                                            title="Ricerca iscritti albo CTU e Periti">Ricerca iscritti albo CTU e Periti</a
+                                            class="link_esterno">
+                                    </li>
+            
+                                </ul>
+                            </li>
+                            <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/modulistica.aspx"
+                                    id="ctl00_menu_navigazione_link_4">Moduli</a class="link_esterno"></li>
+                            <li id="ctl00_menu_navigazione_link_5"><a class="link_esterno hidden-xs"
+                                    href="http://www.tribunale.brescia.giustizia.it/sentenze.aspx">Giurisprudenza</a
+                                    class="link_esterno"></li>
+                            <li class="dropdown visible-xs">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-expanded="false">Giurisprudenza <span class="caret float-right"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/sentenze/"
+                                            title="Giurisprudenza locale">Tribunale di Brescia</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/documenti.aspx?d=4"
+                                            title="Giurisprudenza generale">Corte di Cassazione</a class="link_esterno">
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/pubblicita_legale.aspx"
+                                    id="ctl00_menu_navigazione_link_6">Pubblicità legale</a class="link_esterno"></li>
+                            <li id="ctl00_menu_navigazione_link_7"><a class="link_esterno hidden-xs"
+                                    href="http://www.tribunale.brescia.giustizia.it/links.aspx">Links</a class="link_esterno">
+                            </li>
+            
+                            <li class="dropdown visible-xs">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Links
+                                    <span class="caret float-right"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=3"
+                                            title="Siti istituzionali">Siti istituzionali</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=1"
+                                            title="Motori di ricerca">Motori di ricerca</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=2"
+                                            title="Portali giuridici">Portali giuridici</a class="link_esterno"></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=4"
+                                            title="Fonti normative on-line">Fonti normative on-line</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=5"
+                                            title="Giurisprudenza on-line">Giurisprudenza on-line</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=6"
+                                            title="Riviste giuridiche">Riviste giuridiche</a></li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=7"
+                                            title="Il mondo giudiziario">Il mondo giudiziario</a class="link_esterno">
+                                    </li>
+                                    <li><a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/links.aspx?p=8"
+                                            title="Programmi di utilità">Programmi di utilità</a class="link_esterno">
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button"
+                                    aria-expanded="false" style="width: 115%;"><%= user.nome %> <%= user.cognome %></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/home_page_portal" title="Mia area privata">Mia area privata</a></li>
+                                    <li><a href="/edit_profile" title="Servizio richiesta certificati">Gestione profilo</a></li>
+                                    <li><a href="/logout" title="Servizio richiesta copie atti giudiziari">Esci</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
-
-            <div class="container-fluid breadcrumb hiddenApp_ug">
-                <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Home</a><span>&nbsp;&gt;&nbsp;</span><a href="/service_paper_document_copy_request">Servizio richiesta copie atti</a>
+            
+            <div class="container-fluid breadcrumb">
+                <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Area Riservata</a><span>&nbsp;&gt;&nbsp;</span><a href="/service_paper_document_copy_request">Servizio richiesta copia atti giudiziari</a>
             </div>
 
 
             <!--Middle content-->
-            <div class="container-fluid mt-4">
-                <div class="col-sm-8 mx-auto">
+            <div class="row mt-4">
+                <div class="col-sm-2">
+                    <div>
+                        <h3 class="servizi">
+                            <strong>Servizi telematici</strong></h3>
+                        <ul class="menu-list">
+                            <li><a href="/service_certificates_request" title="Servizio richiesta certificati">Servizio richiesta
+                                    certificati</a></li>
+                            <li><a href="/service_paper_document_copy_request" title="Servizio copie atti giudiziari">Servizio copie
+                                    atti giudiziari</a></li>
+                        </ul>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="comunicazioni">
+                            <strong>Comunicazioni</strong></h3>
+                        <ul class="menu-list">
+                            <li><a href="/all_messages" title="Comunicazioni ed avvisi dalla cancelleria del Tribunale">Comunicazioni e
+                                    avvisi</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-7 mx-auto">
                     <div>
                         <h5 class="text-center">Servizio richiesta copia atti giudiziari</h5>
                         <% if(!citizen) { %>
@@ -220,7 +382,7 @@
                     <% } %>
                     <% if (!citizen) { %>
                     <div class="text-center my-5">
-                        <a class="btn btn-info mr-4" href="/edit_prices_copy_document">Modifica tabella prezzi</a>
+                        <a class="btn btn-info mr-4" href="/edit_prices_copy_document">Modifica tabella degli importi</a>
                         <% if (archive == 1) { %>
                         <a href="/service_paper_document_copy_request" class="btn btn-info">Torna alle richieste recenti</a>
                         <% } else { %>
@@ -229,7 +391,60 @@
                     </div>
                     <% } %>
                 </div>
+                <div class="col-sm-2">
+                    <div>
+                        <h3 class="cerca">
+                            <strong>Ricerca servizi</strong>
+                        </h3>
+                        <form id="form_cerca_servizio" action="/search_service" method="POST">
+                            <div class="bordo mt-4">
+                                <div class="form-group">
+                                    <label for="name_service">Ricerca servizi per nome</label>
+                                    <input type="name_service" class="form-control" id="name_service" name="name_service"
+                                        placeholder="Nome del servizio...">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-default">Cerca</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+
+            <footer class="hiddenApp_ug">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 footer">
+                            <p class="link-footer text-center">
+                                <a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/segnalazioni.aspx">Redazione</a>|<a
+                                    class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/Mappa_sito.aspx">Mappa
+                                    del sito</a class="link_esterno">|<a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/accessibile.aspx">Accessibilità</a
+                                    class="link_esterno">|
+                                <a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/note_legali.aspx">Note
+                                    legali</a class="link_esterno">| <a href="/logout">Esci</a>
+                            </p>
+                            <hr>
+                            <p class="text-center">
+                                Tribunale di brescia
+                                -
+                                Via L. Gambara, 40
+                                -
+                                25121
+                                Brescia
+                                (BS)
+                                <br>
+                                Centralino:
+                                030.7672111
+                                <br>
+                            </p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
@@ -354,6 +569,14 @@
                     </div>
                     <div class="float-right">
                         <p id="recap_req_status"></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="float-left mt-2">
+                        <p>Numero atto</p>
+                    </div>
+                    <div class="float-right">
+                        <p id="recap_req_numero_atto"></p>
                     </div>
                     <br>
                     <hr>

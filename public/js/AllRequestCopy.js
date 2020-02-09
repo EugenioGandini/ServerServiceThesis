@@ -69,6 +69,7 @@ $('#modal_detail').on('show.bs.modal', function (event) {
             $('#recap_req_data').text(data_result.data.substring(0, 10));
             $('#recap_req_status').text(data_result.status_request);
             $('#recap_req_nome_atto').text(data_result.nome_atto_giudiziario);
+            $('#recap_req_numero_atto').text(data_result.numero_atto);
             if (data_result.autentica == 0) {
                 $('#recap_req_autentica').text("No");
             }
@@ -269,4 +270,12 @@ $('.page_range').on('change', function(){
 $('#number_copy').on('change', function(){
     prezzo_attuale = prezzo_per_pagina * num_pagine_selezionate * parseInt($('#number_copy').val());
     $('.totale_prezzo').text(prezzo_attuale + "€ (" + prezzo_per_pagina + "€/pag)");
+})
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
+    }
 })

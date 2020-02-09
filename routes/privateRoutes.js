@@ -32,8 +32,27 @@ router.get('/home_page_portal', (req, res, next) =>{
                         if (err) throw err;
                         userMessages = result.slice(0, 5);  // only first 5 messages
 
-                        res.render('HomePagePortal.ejs', { user: userData, messages: userMessages, total_msg : result.length});
-                        con.end();
+                        con.query("SELECT certificates_request.oid, certificates_request.status_request, certificates_request.date_request, type_certificates.abbreviation_name, type_certificates.type_name " +
+                                    "FROM certificates_request INNER JOIN type_certificates ON certificates_request.oid_type_certificate=type_certificates.oid " +
+                                    "WHERE NOT status_request='COMPLETATO' AND certificates_request.oid_user=" + userData.oid + " ORDER BY date_request DESC", function (err, result_cert, fields) {
+                            if (err) throw err;
+                            let pendent_certificates_val = result_cert.slice(0, 5);
+                            let total_pendent_certificates_val = result_cert.length;
+
+                            con.query("SELECT data, status_request, autentica, urgente " +
+                                "FROM copy_document_request WHERE NOT status_request='COMPLETATO' AND copy_document_request.oid_user=" + userData.oid +
+                                " ORDER BY data DESC", function (err, result_copy_request, fields) {
+                                res.render('HomePagePortal.ejs', { 
+                                    user: userData, 
+                                    messages: userMessages, 
+                                    total_msg: result.length,
+                                    pendent_certificates: pendent_certificates_val,
+                                    total_pendent_certificates: total_pendent_certificates_val,
+                                    pendent_copy_document: result_copy_request.slice(0, 5),
+                                    total_pendent_copy_document: result_copy_request.length});
+                                con.end();
+                            });
+                        });
                     });
                     break;
                 }
@@ -42,8 +61,8 @@ router.get('/home_page_portal', (req, res, next) =>{
                               "FROM certificates_request INNER JOIN type_certificates ON certificates_request.oid_type_certificate=type_certificates.oid " +
                               "WHERE NOT status_request='COMPLETATO' ORDER BY date_request DESC", function (err, result_cert, fields) {
                         if (err) throw err;
-                            var pendent_certificates_val = result_cert.slice(0, 5);  // only first 5 new request of certificates
-                            var total_pendent_certificates_val = result_cert.length;
+                            let pendent_certificates_val = result_cert.slice(0, 5);  // only first 5 new request of certificates
+                            let total_pendent_certificates_val = result_cert.length;
                             con.query("SELECT data, status_request, autentica, urgente " + 
                                       "FROM copy_document_request WHERE NOT status_request='COMPLETATO' " + 
                                       "ORDER BY data DESC", function(err, result_copy_request, fields) {
@@ -249,15 +268,47 @@ router.get('/all_messages', (req, res, next) => {
                     res.render('AllMessages.ejs', {citizen: false, 
                                                    messages: msg_to_res, 
                                                    total_pages: total_pgs,
-                                                   current_page : page_msg});
+                                                   current_page : page_msg, 
+                                                   user: req.session.user});
                 } else {
                     res.render('AllMessages.ejs', {citizen: true, 
                                                    messages: msg_to_res,
                                                    total_pages: total_pgs,
-                                                   current_page : page_msg});
+                                                   current_page : page_msg,
+                                                   user: req.session.user});
                 }
             });
         });
+    }
+})
+
+// this service will search for a service with given name and rend a dinamic page with results
+router.post('/search_service', (req, res, next) => {
+    if (!req.session.user) next();
+    else {
+        let services = [{
+            "name": "Servizio richiesta copie atti giudiziari",
+            "url": "/service_paper_document_copy_request"
+        },{
+            "name": "Servizio richiesta certificati",
+            "url": "/service_certificates_request"
+        }];
+
+        let matches = []
+        services.forEach(element => {
+            if (element.name.toLowerCase().search(req.body.name_service.toLowerCase()) != -1){
+                matches.push(element)
+            }
+        });
+
+        res.render('Searched_service.ejs', { "results": matches, "key_word": req.body.name_service, "user": req.session.user});
+    }
+})
+
+router.get('/edit_profile', (req, res, next) => {
+    if(!req.session.user) next();
+    else {
+        res.render('EditPersonalData.ejs', {user: req.session.user});
     }
 })
 

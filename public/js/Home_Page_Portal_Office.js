@@ -15,11 +15,11 @@ $('#sidebarCollapse').on('click', function () {
 });
 
 $('#modal_edit_personal_data').on('show.bs.modal', function (event) {
-    var modal = $(this)
+    var modal = $(this);
 
-    modal.find('#data_username').val($($('span')[2]).text());
-    modal.find('#data_user_name').val($($('span')[0]).text());
-    modal.find('#data_user_surname').val($($('span')[1]).text());
+    modal.find('#data_username').val($('#name_user').text());
+    modal.find('#data_user_name').val($('#surname_user').text());
+    modal.find('#data_user_surname').val($('#username_user').text());
 });
 
 $('#send_update_data_user').on('click', function () {
@@ -52,5 +52,13 @@ $('#send_update_data_user').on('click', function () {
         });
     } else {
         alert('Nessun dato modificato.');
+    }
+})
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
     }
 })

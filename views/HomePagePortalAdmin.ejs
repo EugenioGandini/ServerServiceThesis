@@ -8,6 +8,8 @@
     <link rel="icon" href="/img/favicon.ico" sizes="16x16">
     <link rel="stylesheet" href="/css/bootstrapV4.min.css">
     <link rel="stylesheet" href="/css/HomePagePortal.css">
+    <link rel="stylesheet" href="/css/flaty.css">
+    <link rel="stylesheet" href="/css/header_footer.css">
     <title>Area Privata</title>
 </head>
 
@@ -18,18 +20,34 @@
 
         <div id="page-content-wrapper">
 
-            <!--Nav Bar-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="col-sm-2"">
+            <div class="row">
+                <div class="col-sm-5">
+                    <img src="/img/header.jpg" alt="Logo Ufficio Giudiziario" title="Logo Ufficio Giudiziario">
                 </div>
-                <div class="col-sm-8 mt-4 text-center">
-                    <a class="no_underline_blue" href="/home_page_portal">
-                        <h1 class="display-4">Area Riservata</h1>
-                    </a>
+                <div class="col-sm-4">
                 </div>
-                <div class="col-sm-2">
-                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
-                        title="Logo della Giustizia">
+                <div class="col-sm-3">
+                    <img class="float-right" src="/img/logo_giustizia.jpg" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </div>
+            
+            <nav class="navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-tribunale">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+            
+                    <div class="collapse navbar-collapse" id="nav-tribunale">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/home_page_portal" class="active">Home</a></li>
+                            <li><a href="/logout" class="btn_exit">Uscita</a></li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
 
@@ -39,7 +57,6 @@
                     <div class="float-left">
                         <h4>Benvenuto/a, <%= user.nome %> <%= user.cognome %>.</h4>
                     </div>
-                    <div class="float-right"><a class="btn btn-danger text-center" href="/logout">Esci</a></div>
                     <br>
                     <br>
                     <div class="float-left">
@@ -48,9 +65,9 @@
                             <img src="/img/modifica_ico.png" href="#" alt="icona di modifica"
                                 style="width: 34px;height: 34px;">
                         </a>
-                        <span style="display: none;"><%= user.nome %></span>
-                        <span style="display: none;"><%= user.cognome %></span>
-                        <span style="display: none;"><%= user.username %></span>
+                        <span id='name_user' style="display: none;"><%= user.nome %></span>
+                        <span id='surname_user' style="display: none;"><%= user.cognome %></span>
+                        <span id='username_user' style="display: none;"><%= user.username %></span>
                     </div>
                     <br>
                     <br>
@@ -85,10 +102,44 @@
                         </tbody>
                     </table>
                     <div class="text-center">
-                        <a class="btn btn-success" data-toggle="modal" data-target="#modal_add_new_user">Aggiungi nuovo utente</a>
+                        <a class="btn btn-primary" data-toggle="modal" data-target="#modal_add_new_user" style="color: azure;">Aggiungi nuovo utente</a>
                     </div>
                 </div>
             </div>
+
+            <footer class="hiddenApp_ug">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 footer">
+                            <p class="link-footer text-center">
+                                <a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/segnalazioni.aspx">Redazione</a>|<a
+                                    class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/Mappa_sito.aspx">Mappa
+                                    del sito</a class="link_esterno">|<a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/accessibile.aspx">Accessibilità</a
+                                    class="link_esterno">|
+                                <a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/note_legali.aspx">Note
+                                    legali</a class="link_esterno">| <a href="/logout">Esci</a>
+                            </p>
+                            <hr>
+                            <p class="text-center">
+                                Tribunale di brescia
+                                -
+                                Via L. Gambara, 40
+                                -
+                                25121
+                                Brescia
+                                (BS)
+                                <br>
+                                Centralino:
+                                030.7672111
+                                <br>
+                            </p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 

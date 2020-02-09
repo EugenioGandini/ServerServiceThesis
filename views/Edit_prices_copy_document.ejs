@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/bootstrapV4.min.css">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="/css/style3.css">
+    <link rel="stylesheet" href="/css/flaty.css">
+    <link rel="stylesheet" href="/css/header_footer.css">
     <link rel="stylesheet" href="/css/custom_style.css">
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet"
@@ -32,71 +34,64 @@
 <body>
 
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar" class="bg-light">
-            <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="sidebar-header">
-                <h3>Menu</h3>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li class="p-2">
-                    <a href="/home_page_portal" class="list-group-item list-group-item-action">Home</a>
-                </li>
-                <li class="p-2">
-                    <a href="#elenco_servizi" class="list-group-item list-group-item-action selected"
-                        data-toggle="collapse" aria-expanded="false">Servizi</a>
-                    <!-- <a href="#"  >Servizi</a> -->
-                    <ul class="collapse list-unstyled" id="elenco_servizi">
-                        <li class="p-2">
-                            <a href="/service_certificates_request"
-                                class="list-group-item list-group-item-action">Richiesta certificati</a>
-                        </li>
-                        <li class="p-2">
-                            <a href="/service_paper_document_copy_request"
-                                class="list-group-item list-group-item-action selected">Richiesta copie atti
-                                giudiziari</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-2">
-                    <a href="/all_messages" class="list-group-item list-group-item-action">Comunicazioni</a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Page Content  -->
         <div id="content">
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="row">
+                <div class="col-sm-5">
+                    <img src="/img/header.jpg" alt="Logo Ufficio Giudiziario" title="Logo Ufficio Giudiziario">
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-3">
+                    <img class="float-right" src="/img/logo_giustizia.jpg" alt="Logo Giustizia" title="Logo della Giustizia">
+                </div>
+            </div>
+            
+            <nav class="navbar-default">
                 <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="btn bordo-btn">
-                        <img src="/img/menu_ico.png" alt="" style="width: 24px; height: 24px;">
-                        <strong>Menu</strong>
-                    </button>
-
-                    <a class="no_underline_blue" href="/home_page_portal">
-                        <h1 class="display-4">Area Riservata</h1>
-                    </a>
-                    <img class="float-right" src="/img/logo_giustizia_alfa.png" alt="Logo Giustizia"
-                        title="Logo della Giustizia">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-tribunale">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+            
+                    <div class="collapse navbar-collapse" id="nav-tribunale">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/home_page_portal" class="">Home</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button"
+                                    aria-expanded="false" style="width: 90px;">Servizi</a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/service_certificates_request" class="active"
+                                            title="Servizio richiesta certificati">Servizio
+                                            richiesta certificati</a></li>
+                                    <li><a href="/service_paper_document_copy_request"
+                                            title="Servizio richiesta copie atti giudiziari">Servizio richiesta copie atti
+                                            giudiziari</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/all_messages">Comunicazioni</a></li>
+                            <li><a href="/logout" class="btn_exit">Uscita</a></li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
 
-            <div class="container-fluid breadcrumb hiddenApp_ug">
+            <div class="container-fluid breadcrumb">
                 <span>Sei in:&nbsp;&nbsp;</span><a href="/home_page_portal">Home</a><span>&nbsp;&gt;&nbsp;</span><a
-                    href="/service_paper_document_copy_request">Servizio richiesta copie atti</a><span>&nbsp;&gt;&nbsp;</span><a href="/edit_prices_copy_document">Modifica tabella dei prezzi</a>
+                    href="/service_paper_document_copy_request">Servizio richiesta copie atti</a><span>&nbsp;&gt;&nbsp;</span><a href="/edit_prices_copy_document">Modifica tabella degli importi</a>
             </div>
 
             <!--Middle content-->
             <div class="container-fluid mt-4">
                 <div class="col-sm-8 mx-auto">
                     <div class="text-center my-5">
-                        <p>Tabella dei <strong>prezzi € per pagina</strong> in base a numero di pagine/autenticità della copia e urgenza della richiesta.</p>
+                        <p>Tabella degli <strong>importi € per pagina</strong> in base a numero di pagine/autenticità della copia e urgenza della richiesta.</p>
                     </div>
                     <hr>
                     <% if (rows_prices.length > 0) { %>
@@ -132,15 +127,48 @@
                         </tbody>
                     </table>
                     <% } else { %>
-                    <div class="text-center bordo"><strong class="my-5">La tabella dei prezzi è vuota.</strong></div>
+                    <div class="text-center bordo"><strong class="my-5">La tabella degli importi è vuota.</strong></div>
                     <% } %>
                     <div class="text-center">
-                        <a data-toggle="modal" data-target="#modal_add_new_price" class="btn btn-info my-4 add_new_prices mx-2" style="color: aliceblue;">Aggiungi nuova voce dei prezzi</a>
+                        <a data-toggle="modal" data-target="#modal_add_new_price" class="btn btn-info my-4 add_new_prices mx-2" style="color: aliceblue;">Aggiungi nuova voce importi</a>
                         <a href="/service_paper_document_copy_request" class="btn btn-info my-4 mx-2"
                             style="color: aliceblue;">Torna alla lista delle richieste</a>
                     </div>
                 </div>
             </div>
+            <footer class="hiddenApp_ug">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 footer">
+                            <p class="link-footer text-center">
+                                <a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/segnalazioni.aspx">Redazione</a>|<a
+                                    class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/Mappa_sito.aspx">Mappa
+                                    del sito</a class="link_esterno">|<a class="link_esterno"
+                                    href="http://www.tribunale.brescia.giustizia.it/accessibile.aspx">Accessibilità</a
+                                    class="link_esterno">|
+                                <a class="link_esterno" href="http://www.tribunale.brescia.giustizia.it/note_legali.aspx">Note
+                                    legali</a class="link_esterno">| <a href="/logout">Esci</a>
+                            </p>
+                            <hr>
+                            <p class="text-center">
+                                Tribunale di brescia
+                                -
+                                Via L. Gambara, 40
+                                -
+                                25121
+                                Brescia
+                                (BS)
+                                <br>
+                                Centralino:
+                                030.7672111
+                                <br>
+                            </p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
@@ -150,7 +178,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel1">Nuova voce prezzi</h5>
+                    <h5 class="modal-title" id="exampleModalLabel1">Nuova voce importi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

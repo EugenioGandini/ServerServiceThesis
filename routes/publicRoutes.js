@@ -17,7 +17,9 @@ const admin = "Amministratore";
 
 //For /login request return the login page
 router.get('/login', (req, res) =>{
-    res.redirect('/html/Login.html');
+    if (req.session.user) {
+        res.redirect('/home_page_portal');
+    } else res.redirect('/html/Login.html');
 });
 
 //For /login_stuff request return the login page for the court stuff

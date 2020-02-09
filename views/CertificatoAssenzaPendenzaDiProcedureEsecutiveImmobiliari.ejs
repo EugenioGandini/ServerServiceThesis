@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/custom_style.css">
 
-<div class="col-sm-8 mx-auto mt-1 text-center">
-    <p>2) Inserisci i dati richiesti.</p>
+<div class="container-fluid breadcrumb breadcrumb_fase_richiesta_certificato">
+    <a href="/add_request_certificate">Selezione del certificato</a><span>&nbsp;>&nbsp;</span><a href="#">Inserimento dati</a>
 </div>
-<form class="col-sm-6 mx-auto my-4 bordo-form" action="add_request_certificate" method="post"
+<form class="col-sm-6 mx-auto my-5 bordo-form form_certificato" action="add_request_certificate" method="post"
     enctype="multipart/form-data">
     <div class="custom-file">
         <input type="file" class="custom-file-input" name="ci" id="carta_identita" required>
@@ -31,9 +31,6 @@
     </div>
 </form>
 <div id="riepilogo" style="display: none;">
-    <div class="col-sm-8 mx-auto mt-4">
-        <p>3) Riepilogo dei dati inseriti.</p>
-    </div>
     <div class="col-sm-6 mx-auto my-4 bordo-form">
         <div class="float-left mt-2">
             <p><strong>Copia documento di identità:</strong></p>
@@ -71,7 +68,7 @@
     </div>
     <div class="text-center">
         <div>
-            <a class="btn btn-danger mx-2" href="/home_page_portal">Annulla richiesta</a>
+            <a class="btn btn-danger mx-2" href="/service_certificates_request">Annulla richiesta</a>
             <a class="mx-2" id="pagamento" href="#"><img src="/img/pagoPA.png" style="width: 100px; height: 70px;"></a>
         </div>
         <div class="lds-roller mt-2" style="display: none;">
@@ -97,7 +94,7 @@
 
     var recap = false;
 
-    $('form').on('submit', function (event) {
+    $('.form_certificato').on('submit', function (event) {
         if (recap == false) {
             event.preventDefault();
 
@@ -113,8 +110,9 @@
                 alert('La copia del codice fiscale deve essere un documento (PDF) oppure un\'immagine (JPEG o PNG)');
             }
             else {
-                $('form').hide();
+                $('.form_certificato').hide();
                 $('#riepilogo').show();
+                $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Riepilogo dati inseriti</a>');
 
                 var file_c_i = $('#carta_identita').val().split("\\");
                 var file_c_f = $('#codice_fiscale').val().split("\\");
@@ -127,7 +125,7 @@
                 else {
                     $('#recap_uso').text($('#uso').val());
                 }
-                $('#type_cert').val($('select option:selected').val());
+                $('#type_cert').val('3');
 
                 recap = true;
             }
@@ -151,10 +149,12 @@
             $('.lds-roller').hide();
             $('#payment_succeded').show();
             $('#send_request').prop("disabled", false);
+            $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Completamento richiesta</a>');
         }, 3000);
     })
 
     $('#send_request').on('click', function () {
-        $('form').submit();
+        $('.form_certificato').submit();
+        alert('Richiesta di certificato inviata');
     })
 </script>

@@ -1,9 +1,5 @@
 var recap = false;
 
-$("#sidebar").mCustomScrollbar({
-    theme: "minimal"
-});
-
 $('#dismiss, .overlay').on('click', function () {
     $('#sidebar').removeClass('active');
     $('.overlay').removeClass('active');
@@ -16,7 +12,7 @@ $('#sidebarCollapse').on('click', function () {
     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 });
 
-$('form').on('submit', function (event) {
+$('.form_copie').on('submit', function (event) {
     if (recap == false) {
         event.preventDefault();
 
@@ -34,8 +30,9 @@ $('form').on('submit', function (event) {
             $('#doc_aggiuntivo').val().toLowerCase().endsWith('.png') ||
             $('#doc_aggiuntivo').val().toLowerCase().endsWith('.pdf')) {
 
-            $('form').hide();
+            $('.form_copie').hide();
             $('#riepilogo').show();
+            $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Revisione dati inseriti</a>')
 
             var file_c_i = $('#carta_identita').val().split("\\");
             var file_c_f = $('#codice_fiscale').val().split("\\");
@@ -54,7 +51,12 @@ $('form').on('submit', function (event) {
                 $('#recap_doc_agg').text(file_doc_agg[file_doc_agg.length - 1]);
             }
 
+            if ($('#nome_atto').val() == '') {
+                $('#nome_atto').val('Non specificato')
+            }
+
             $('#recap_nome_atto').text($('#nome_atto').val());
+            $('#recap_numero_atto').text($('#numero_atto').val());
 
             recap = true;
         }
@@ -81,5 +83,14 @@ $('#doc_aggiuntivo').on("change", function () {
 });
 
 $('#send_request').on('click', function () {
-    $('form').submit();
+    $('.form_copie').submit();
+    alert('Richiesta di copia atto inviata');
+})
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
+    }
 })

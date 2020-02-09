@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="/css/custom_style.css">
+
+<div class="container-fluid breadcrumb breadcrumb_fase_richiesta_certificato">
+    <a href="/add_request_certificate">Selezione del certificato</a><span>&nbsp;>&nbsp;</span><a href="#">Inserimento
+        dati</a>
+</div>
+<form class="col-sm-6 mx-auto my-4 bordo-form form_certificato" action="add_request_certificate" method="post" enctype="multipart/form-data">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" name="ci" id="carta_identita" required>
+        <label class="custom-file-label" for="carta_identita">Copia carta di identità</label>
+    </div>
+    <div class="custom-file my-5">
+        <input type="file" class="custom-file-input" name="cf" id="codice_fiscale" required>
+        <label class="custom-file-label" for="codice_fiscale">Copia codice fiscale</label>
+    </div>
+    <div class="input-group mb-4">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Uso</span>
+        </div>
+        <textarea id="uso" class="form-control" name="uso" placeholder="L'uso per cui se ne richiede..."  rows=5 required></textarea>
+        <input id="type_cert" type="num" name="type_certificate" style="display: none;">
+    </div>
+    <div class="text-center mb-2">
+        <button type="submit" class="btn btn-info">Prosegui</button>
+    </div>
+</form>
+<div id="riepilogo" style="display: none;">
+    <div class="col-sm-6 mx-auto my-4 bordo-form">
+        <div class="float-left mt-2">
+            <p><strong>Copia documento di identità:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_c_i"></p>
+        </div>
+        <br>
+        <hr>
+        <div class="float-left mt-2">
+            <p><strong>Copia codice fiscale:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_c_f"></p>
+        </div>
+        <br>
+        <hr>
+        <div class="float-left mt-2">
+            <p><strong>Uso:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_uso"></p>
+        </div>
+        <br>
+        <hr>
+
+    </div>
+    <div class="text-center">
+        <div>
+            <a class="btn btn-danger mx-2" href="/service_certificates_request">Annulla richiesta</a>
+            <a class="mx-2" id="pagamento" href="#"><img src="/img/pagoPA.png" style="width: 100px; height: 70px;"></a>
+        </div>
+        <div class="lds-roller mt-2" style="display: none;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="payment_succeded" style="display:none;">
+            <img src="/img/payment_done.png" style="width: 80px; height: 80px;">
+        </div>
+    </div>
+    <div class="text-center my-3">
+        <button id="send_request" class="btn btn-success" disabled="disabled">Invia richiesta</button>
+    </div>
+</div>
+
+<script>
+
+    var recap = false;
+
+    $('.form_certificato').on('submit', function (event) {
+        if(recap==false){
+            event.preventDefault();
+
+            if(!$('#carta_identita').val().toLowerCase().endsWith('.jpg') &&
+               !$('#carta_identita').val().toLowerCase().endsWith('.png') &&
+               !$('#carta_identita').val().toLowerCase().endsWith('.pdf')){
+                alert('La copia del documento di identità deve essere un documento (PDF) oppure un\'immagine (JPEG o PNG)');
+                return;
+            }
+            else if (!$('#codice_fiscale').val().toLowerCase().endsWith('.jpg') &&
+                     !$('#codice_fiscale').val().toLowerCase().endsWith('.png') &&
+                     !$('#codice_fiscale').val().toLowerCase().endsWith('.pdf')) {
+                alert('La copia del codice fiscale deve essere un documento (PDF) oppure un\'immagine (JPEG o PNG)');
+            }
+            else {
+                $('.form_certificato').hide();
+                $('#riepilogo').show();
+                $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Riepilogo dati inseriti</a>');
+
+                var file_c_i = $('#carta_identita').val().split("\\");
+                var file_c_f = $('#codice_fiscale').val().split("\\");
+                $('#recap_c_i').text(file_c_i[file_c_i.length -1 ]);
+                $('#recap_c_f').text(file_c_f[file_c_f.length -1 ]);
+                if($('#uso').val().length > 30){
+                    $('#recap_uso').text($('#uso').val().slice(0,30) + "...");
+                }
+                else {
+                    $('#recap_uso').text($('#uso').val());
+                }
+                $('#type_cert').val('5');
+
+                recap = true;
+            }
+        }
+    })
+
+    $('#carta_identita').on("change", function () {
+        var file_c_i = $('#carta_identita').val().split("\\");
+        $("label[for='carta_identita']").text(file_c_i[file_c_i.length -1]);
+    });
+    
+    $('#codice_fiscale').on("change", function () {
+        var file_c_f = $('#codice_fiscale').val().split("\\");
+        $("label[for='codice_fiscale']").text(file_c_f[file_c_f.length -1]);
+    });
+
+    $('#pagamento').on('click', function(event) {
+        $(this).hide();
+        $('.lds-roller').show();
+        setTimeout(function(){
+            $('.lds-roller').hide();
+            $('#payment_succeded').show();
+            $('#send_request').prop("disabled", false);
+            $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Completamento richiesta</a>');
+        }, 3000);
+    })
+
+    $('#send_request').on('click', function() {
+        $('.form_certificato').submit();
+        alert('Richiesta di certificato inviata');
+    })
+</script>

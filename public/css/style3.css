@@ -31,12 +31,12 @@ p {
     background-color: #a5d3ff;
 }
 
-.navbar {
+/* .navbar {
     padding: 15px 10px;
     border: none;
     border-radius: 0;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .navbar-btn {
     box-shadow: none;
@@ -146,10 +146,7 @@ a[data-toggle="collapse"] {
 }
 
 ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #6d7fcc;
-    color: #525252 !important;
+    font-size: 1.5rem;
 }
 
 ul.CTAs {
@@ -241,7 +238,6 @@ a:hover {
 .breadcrumb {
     background-color: transparent;
     border-bottom-color: grey;
-    border-bottom-width: 2px !important;
 }
 
 .no_underline_blue {

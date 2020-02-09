@@ -1,0 +1,62 @@
+body {
+    background-color: #fff !important;
+}
+
+.hiddenApp_ug {
+    padding: 20px 0px;
+    margin: 0;
+    margin-top: 20px;
+    border-top: solid 2px #036;
+    font-size: 12px;
+}
+
+footer {
+    margin-top: 50px !important;
+}
+
+footer a {
+    font-weight: 700;
+    color: #036;
+}
+
+footer .link-footer a {
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.breadcrumb {
+    padding: 5px 0;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    list-style: none;
+    background-color: #FFF;
+    border-bottom: solid 1px #CCC;
+    border-radius: 0;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.navbar-nav {
+    float: left !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+.custom-select {
+    height: auto !important;
+}
+
+.custom-file-label {
+    height: auto !important;
+}
+
+.custom-file-label::after {
+    height: auto !important;
+}

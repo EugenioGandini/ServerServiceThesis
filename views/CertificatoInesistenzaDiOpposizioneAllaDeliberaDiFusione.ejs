@@ -1,0 +1,128 @@
+<link rel="stylesheet" href="/css/custom_style.css">
+
+<div class="container-fluid breadcrumb breadcrumb_fase_richiesta_certificato">
+    <a href="/add_request_certificate">Selezione del certificato</a><span>&nbsp;>&nbsp;</span><a href="#">Inserimento
+        dati</a>
+</div>
+<form class="col-sm-6 mx-auto my-4 bordo-form form_certificato" action="add_request_certificate" method="post" enctype="multipart/form-data">
+    <div class="input-group mb-5">
+        <label for="ruolo_utente" class="font-weight-bold col-sm-2 p-1 mr-5">Ruolo richiedente:</label>
+        <input id="ruolo_utente" type="text" class="form-control text-center" name="ruolo_utente" placeholder="Amministratore, Legale rappresentante..." required>
+    </div>
+    <div class="input-group mb-5">
+        <label for="ditta" class="font-weight-bold col-sm-2 p-1 mr-5">Nome società:</label>
+        <input id="ditta" type="text" class="form-control text-center" name="ditta" placeholder="Nome della società" required>
+    </div>
+    <div class="input-group mb-5">
+        <label for="sede_legale" class="font-weight-bold col-sm-2 p-1 mr-5">Sede legale:</label>
+        <input id="sede_legale" type="text" class="form-control text-center" name="sede_legale"
+            placeholder="La sede della società" required>
+    </div>
+    <div class="input-group mb-5">
+        <label for="data_delibera" class="font-weight-bold col-sm-2 p-1 mr-5">Data delibera non opposizione:</label>
+        <input id="data_delibera" type="date" class="form-control text-center" name="data_delibera"
+            placeholder="La data in cui è stata rilasciata la non opposizione alla delibera della società" required>
+    </div>
+    <input id="type_cert" type="num" name="type_certificate" style="display: none;">
+    <div class="text-center mb-2">
+        <button type="submit" class="btn btn-info">Prosegui</button>
+    </div>
+</form>
+<div id="riepilogo" style="display: none;">
+    <div class="col-sm-6 mx-auto my-4 bordo-form">
+        <div class="float-left mt-2">
+            <p><strong>Ruolo utente:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_ruolo_utente"></p>
+        </div>
+        <br>
+        <hr>
+        <div class="float-left mt-2">
+            <p><strong>Nome società:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_ditta"></p>
+        </div>
+        <br>
+        <hr>
+        <div class="float-left mt-2">
+            <p><strong>Sede legale:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_sede_legale"></p>
+        </div>
+        <br>
+        <hr>
+        <div class="float-left mt-2">
+            <p><strong>Data delibera:</strong></p>
+        </div>
+        <div class="float-right">
+            <p id="recap_data_delibera"></p>
+        </div>
+        <br>
+        <hr>
+    </div>
+    <div class="text-center">
+        <div>
+            <a class="btn btn-danger mx-2" href="/service_certificates_request">Annulla richiesta</a>
+            <a class="mx-2" id="pagamento" href="#"><img src="/img/pagoPA.png" style="width: 100px; height: 70px;"></a>
+        </div>
+        <div class="lds-roller mt-2" style="display: none;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="payment_succeded" style="display:none;">
+            <img src="/img/payment_done.png" style="width: 80px; height: 80px;">
+        </div>
+    </div>
+    <div class="text-center my-3">
+        <button id="send_request" class="btn btn-success" disabled="disabled">Invia richiesta</button>
+    </div>
+</div>
+
+<script>
+
+    var recap = false;
+
+    $('.form_certificato').on('submit', function (event) {
+        if(recap==false){
+            event.preventDefault();
+
+            $('.form_certificato').hide();
+            $('#riepilogo').show();
+            $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Riepilogo dati inseriti</a>');
+
+            $('#recap_ruolo_utente').text($('#ruolo_utente').val());
+            $('#recap_ditta').text($('#ditta').val());
+            $('#recap_sede_legale').text($('#sede_legale').val());
+            $('#recap_data_delibera').text($('#data_delibera').val());
+
+            $('#type_cert').val('4');
+
+            recap = true;
+        }
+    })
+
+    $('#pagamento').on('click', function(event) {
+        $(this).hide();
+        $('.lds-roller').show();
+        setTimeout(function(){
+            $('.lds-roller').hide();
+            $('#payment_succeded').show();
+            $('#send_request').prop("disabled", false);
+            $('.breadcrumb_fase_richiesta_certificato').append('<span>&nbsp;>&nbsp;</span><a href="#">Completamento richiesta</a>');
+        }, 3000);
+    })
+
+    $('#send_request').on('click', function() {
+        $('.form_certificato').submit();
+        alert('Richiesta di certificato inviata');
+    })
+</script>

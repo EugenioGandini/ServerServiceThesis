@@ -56,7 +56,6 @@ $('#modal_detail').on('show.bs.modal', function (event) {
             else {
                 $('#recap_cert_req_payment').text('Pagamento pendente');
             }
-            $('#recap_cert_req_payment').text(data.abbreviation_name);
 
             if(data.bene != undefined || data.company != undefined){
                 $('.object-request').show();
@@ -150,5 +149,13 @@ $('.select_status_request').on('change', function(event) {
         });
     } else {
         alert('Operazione annullata');
+    }
+})
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
     }
 })

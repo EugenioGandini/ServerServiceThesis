@@ -45,6 +45,14 @@ router.post('/obtain_form_certificate', (req, res, next) => {
                 res.render('CertificatoAssenzaPendenzaDiProcedureEsecutiveImmobiliari.ejs', {});
                 break;
             }
+            case 4:{
+                res.render('CertificatoInesistenzaDiOpposizioneAllaDeliberaDiFusione.ejs', {});
+                break;
+            }
+            case 5: {
+                res.render('CertificatoNonPresenzaDiProcedureDiInterdizione.ejs', {});
+                break;
+            }
             default: {
                 res.end();
             }
@@ -77,6 +85,14 @@ router.post('/add_request_certificate', (req, res, next) => {
                 }
                 case 3: {
                     insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields, "immobiliari");
+                    break;
+                }
+                case 4: {
+                    insertCertificateOpposizioneDeliberaFusione(req, res, fields);
+                    break;
+                }
+                case 5: {
+                    insertCertificateProceduraDiInterdizione(req, res, files, fields);
                     break;
                 }
             }
@@ -355,7 +371,7 @@ router.get('/service_paper_document_copy_request', (req, res, next) => {
 router.get('/add_request_copy_document', (req, res, next) => {
     if (!req.session.user) return next();
     else {
-        res.render('document_copy_request.ejs', {});
+        res.render('document_copy_request.ejs', {user: req.session.user});
     }
 });
 
@@ -378,13 +394,13 @@ router.post('/add_request_copy_document', (req, res, next) => {
                 fs.renameSync(files.doc_aggiuntivo.path, path_doc_agg);
             }
 
-            var query_insert_request = "INSERT INTO `copy_document_request` (`nome_atto_giudiziario`, `copy_ci`, `copy_cf`, `autentica`, `urgente`, ";
+            var query_insert_request = "INSERT INTO `copy_document_request` (`nome_atto_giudiziario`, `numero_atto`, `copy_ci`, `copy_cf`, `autentica`, `urgente`, ";
             if(files.doc_aggiuntivo.name != "") {
                 query_insert_request = query_insert_request + "`other_doc`, `mimetype_other_doc`, ";
             }
             query_insert_request = query_insert_request + 
                 "`payment`, `oid_user`, `mimetype_copy_ci`, `mimetype_copy_cf`) VALUES (" +
-                "'" + fields.nome_atto + "', " + "LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), " + fields.autentica + ", " + fields.urgente;
+                "'" + fields.nome_atto + "', '" + fields.numero_atto + "', " + "LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), " + fields.autentica + ", " + fields.urgente;
             if (files.doc_aggiuntivo.name != "") {
                 query_insert_request = query_insert_request + ", LOAD_FILE('" + path_doc_agg.replace(/\\/g, '/') + "'), '" + files.doc_aggiuntivo.type + "'";
             }
@@ -574,6 +590,55 @@ function insertCertificateEsecuzioniMobiliariImmobiliari(req, res, files, fields
     })
 }
 
+function insertCertificateOpposizioneDeliberaFusione(req, res, fields){
+    var con = mysql.createConnection(database_parameters);
+    con.connect(function (err) {
+        if (err) throw err;
+
+        var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, payment, ruolo_richiedente, company, sede_company, data_delibera, reason_request) VALUES (" +
+            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', TRUE, '" 
+            + fields.ruolo_utente + "', '" + fields.ditta + "', '"
+            + fields.sede_legale + "', '" +  fields.data_delibera + "', 'Non specificato')";
+        con.query(query_insert_request, function (err, result, fields) {
+            if (err) throw err;
+            else {
+                console.log("Inserted new request successfully");
+                res.status(200);
+                res.redirect('/home_page_portal');
+            }
+            con.end();
+        });
+    });
+}
+
+function insertCertificateProceduraDiInterdizione(req, res, files, fields) {
+    var con = mysql.createConnection(database_parameters);
+    con.connect(function (err) {
+        if (err) throw err;
+
+        //var path_ci = path.join(__dirname) + "/../private/data_certificates/" + files.ci.name;
+        var path_ci = path.join(path.dirname(files.ci.path), "C_I" + path.extname(files.ci.name));
+        fs.renameSync(files.ci.path, path_ci);
+
+        var path_cf = path.join(path.dirname(files.cf.path), "C_F" + path.extname(files.cf.name));
+        fs.renameSync(files.cf.path, path_cf);
+
+
+        var query_insert_request = "INSERT INTO certificates_request (oid_type_certificate, oid_user, copy_ci, copy_cf, reason_request, payment, mimetype_copy_ci, mimetype_copy_cf) VALUES (" +
+            "'" + fields.type_certificate + "', '" + req.session.user.oid + "', LOAD_FILE('" + path_ci.replace(/\\/g, '/') + "'), LOAD_FILE('" + path_cf.replace(/\\/g, '/') + "'), '" +
+            myutils.parseTextInsertSql(fields.uso) + "', TRUE, '" + files.ci.type + "', '" + files.cf.type + "')";
+        con.query(query_insert_request, function (err, result, fields) {
+            if (err) throw err;
+            else {
+                console.log("Inserted new request successfully");
+                res.status(200);
+                res.redirect('/home_page_portal');
+            }
+            con.end();
+        });
+    });
+}
+
 function sendPageNewRequest(req, res){
     var con = mysql.createConnection(database_parameters);
     con.connect(function (err) {
@@ -581,7 +646,7 @@ function sendPageNewRequest(req, res){
         con.query("SELECT * FROM type_certificates", function (err, result, fields) {
             if (err) throw err;
             con.end();
-            res.render('CertificatesRequest.ejs', { certificates: result });
+            res.render('CertificatesRequest.ejs', { certificates: result, user: req.session.user});
         })
     });
 }
@@ -603,7 +668,7 @@ function sendPageAllCertificates(req, res, dataUser){
                           "FROM `certificates_request` AS t " + 
                           "JOIN user AS r ON t.oid_user = r.oid JOIN type_certificates AS p ON t.oid_type_certificate = p.oid " +
                           "WHERE r.oid = " + dataUser.oid + " " +
-                          "ORDER BY t.status_request DESC, t.date_request DESC"
+                          "ORDER BY t.date_request DESC"
                     , function (err, result, fields) {
                         if (err) throw err;
                         con.end();
@@ -620,7 +685,7 @@ function sendPageAllCertificates(req, res, dataUser){
                             total_pgs = (result.length / elements_per_page) + 1;
                         }
 
-                        res.render('AllCertificates.ejs', {certificates: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive: 0 });
+                        res.render('AllCertificates.ejs', {certificates: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive: 0, user: req.session.user });
                 });
             });
             break;
@@ -637,7 +702,7 @@ function sendPageAllCertificates(req, res, dataUser){
                 } else {
                     query_sql = query_sql + "WHERE NOT t.status_request='COMPLETATO' ";
                 }
-                query_sql = query_sql + "ORDER BY t.status_request DESC, t.date_request DESC";
+                query_sql = query_sql + "ORDER BY t.date_request DESC";
 
                 con.query(query_sql, function (err, result, fields) {
                     if (err) throw err;
@@ -655,7 +720,7 @@ function sendPageAllCertificates(req, res, dataUser){
                         total_pgs = (result.length / elements_per_page) + 1;
                     }
 
-                res.render('AllCertificates.ejs', { certificates: result_to_send, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive});
+                res.render('AllCertificates.ejs', { certificates: result_to_send, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive, user: req.session.user});
                 });
             });
             break;
@@ -697,7 +762,7 @@ function sendPageAllRequestCopy(req, res, dataUser) {
                             total_pgs = (result.length / elements_per_page) + 1;
                         }
 
-                        res.render('AllRequestCopy.ejs', { copy_document_request: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive:0 });
+                        res.render('AllRequestCopy.ejs', { copy_document_request: result_to_send, citizen: true, total_pages: total_pgs, current_page: page_msg, archive:0, user: req.session.user });
                     });
             });
             break;
@@ -732,7 +797,7 @@ function sendPageAllRequestCopy(req, res, dataUser) {
                         total_pgs = (result.length / elements_per_page) + 1;
                     }
 
-                    res.render('AllRequestCopy.ejs', { copy_document_request: result, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive });
+                    res.render('AllRequestCopy.ejs', { copy_document_request: result, citizen: false, total_pages: total_pgs, current_page: page_msg, archive: req.query.archive, user: req.session.user });
                 });
             });
             break;

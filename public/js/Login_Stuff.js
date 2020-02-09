@@ -15,3 +15,11 @@ $('form').on('submit', function (event) {
         }
     });
 });
+
+$('.link_esterno').on('click', function (event) {
+
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
+    }
+})

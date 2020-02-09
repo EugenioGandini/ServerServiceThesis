@@ -1,22 +1,6 @@
 var recipient
 var oid_sender_msg
 
-$("#sidebar").mCustomScrollbar({
-    theme: "minimal"
-});
-
-$('#dismiss, .overlay').on('click', function () {
-    $('#sidebar').removeClass('active');
-    $('.overlay').removeClass('active');
-});
-
-$('#sidebarCollapse').on('click', function () {
-    $('#sidebar').addClass('active');
-    $('.overlay').addClass('active');
-    $('.collapse.in').toggleClass('in');
-    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-});
-
 $('#modal_msg').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     
@@ -120,22 +104,10 @@ $('#send_update_data_user').on('click', function () {
     }
 })
 
-$("#sidebar").mCustomScrollbar({
-    theme: "minimal"
-});
+$('.link_esterno').on('click', function (event) {
 
-$('#dismiss, .overlay').on('click', function () {
-    // hide sidebar
-    $('#sidebar').removeClass('active');
-    // hide overlay
-    $('.overlay').removeClass('active');
-});
-
-$('#sidebarCollapse').on('click', function () {
-    // open sidebar
-    $('#sidebar').addClass('active');
-    // fade in the overlay
-    $('.overlay').addClass('active');
-    $('.collapse.in').toggleClass('in');
-    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-});
+    var question = confirm('Verrai rediretto sul sito ufficiale del Tribunale di Brescia');
+    if (question === false) {
+        event.preventDefault()
+    }
+})
